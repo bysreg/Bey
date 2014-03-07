@@ -64,6 +64,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IRendering.h" />
+    <ClInclude Include="D3DRendering.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D3DRendering.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

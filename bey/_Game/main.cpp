@@ -13,6 +13,7 @@
 IDXGISwapChain *g_SwapChain;             // the pointer to the swap chain interface
 ID3D11Device *g_Device;                     // the pointer to our Direct3D device interface
 ID3D11DeviceContext *g_DeviceContext;           // the pointer to our Direct3D device context
+ID3D11RenderTargetView *g_BackBuffer;    // global declaration
 
 // function prototypes
 void InitD3D(HWND hWnd);     // sets up and initializes Direct3D
@@ -28,32 +29,76 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 void InitD3D(HWND hWnd) 
 {
 	// create a struct to hold information about the swap chain
-	DXGI_SWAP_CHAIN_DESC scd;
+	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 
 	// clear out the struct for use
-	ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
+	ZeroMemory(&swapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
 
 	// fill the swap chain description struct
-	scd.BufferCount = 1;                                    // one back buffer
-	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;     // use 32-bit color
-	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // how swap chain is to be used
-	scd.OutputWindow = hWnd;                                // the window to be used
-	scd.SampleDesc.Count = 4;                               // how many multisamples
-	scd.Windowed = TRUE;                                    // windowed/full-screen mode
+	swapChainDesc.BufferCount = 1;                                    // one back buffer
+	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;     // use 32-bit color
+	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // how swap chain is to be used (draw to back buffer)
+	swapChainDesc.OutputWindow = hWnd;                                // the window to be used
+	swapChainDesc.SampleDesc.Count = 4;                               // how many multisamples (for anti-aliasing, guaranteed support up to 4, minimum 1)
+	swapChainDesc.Windowed = TRUE;                                    // windowed/full-screen mode
 
-	// create a device, device context and swap chain using the information in the scd struct
+	// create a device, device context and swap chain using the information in the swapChainDesc struct
 	D3D11CreateDeviceAndSwapChain(NULL, // use default adapter (there might be more than one graphics adapter)
-		D3D_DRIVER_TYPE_HARDWARE, // 
+		D3D_DRIVER_TYPE_HARDWARE, // use GPU hardware for rendering
 		NULL,
-		NULL,
-		NULL,
-		NULL,
-		D3D11_SDK_VERSION,
-		&scd,
-		&g_SwapChain,
-		&g_Device,
-		NULL,
-		&g_DeviceContext);
+		NULL, // flags 
+		NULL, // feature level list
+		NULL, // number of elements in feature level list
+		D3D11_SDK_VERSION, // sdk version
+		&swapChainDesc, // pointer to pointer to swap chain description struct
+		&g_SwapChain, // pointer to pointer to swap chain object
+		&g_Device, // pointer to pointer to device object
+		NULL, // pointer to feature level variable 
+		&g_DeviceContext); // pointer to pointer device context object
+
+	// get the address of the back buffer (number 0)
+	ID3D11Texture2D *pBackBuffer;
+	g_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+
+	// use the back buffer address to create the render target
+	g_Device->CreateRenderTargetView(pBackBuffer, NULL, &g_BackBuffer);
+	pBackBuffer->Release(); // destroy the com object used to access the back buffer (the back buffer itself is not destroyed)
+
+	// set the render target as the back buffer
+	g_DeviceContext->OMSetRenderTargets(1, &g_BackBuffer, NULL);
+
+	// Set the viewport
+	D3D11_VIEWPORT viewport;
+	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = 800;
+	viewport.Height = 600;
+
+	g_DeviceContext->RSSetViewports(1, &viewport);
+}
+
+// cleans up Direct3D and COM
+void CleanD3D()
+{
+	// close and release all existing COM objects
+	g_SwapChain->Release();
+	g_BackBuffer->Release();
+	g_Device->Release();
+	g_DeviceContext->Release();
+}
+
+// this is the function used to render a single frame
+void RenderFrame(void)
+{
+	// clear the back buffer to a deep blue
+	g_DeviceContext->ClearRenderTargetView(g_BackBuffer, D3DXCOLOR(0.0f, 0.2f, 0.4f, 1.0f));
+
+	// do 3D rendering on the back buffer here
+
+	// switch the back buffer and the front buffer
+	g_SwapChain->Present(0, 0);
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this application
@@ -101,6 +146,9 @@ int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this appl
 	// display the window on the screen
 	ShowWindow(hWnd, nCmdShow);
 
+	// initialize direct3D
+	InitD3D(hWnd);
+
 	// enter the main loop:
 
 	// this struct holds Windows event messages
@@ -119,13 +167,12 @@ int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this appl
 			// check to see if it's time to quit
 			if (msg.message == WM_QUIT)
 				break;
-		}
-		else
-		{
-			// Run game code here
-		}
-		
+		}		
+		RenderFrame();
 	}
+
+	// release direct 3d resources
+	CleanD3D();
 
 	// return this part of the WM_QUIT message to Windows
 	return msg.wParam;
