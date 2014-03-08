@@ -21,9 +21,15 @@
     <ClInclude Include="D3DRendering.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DRendering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

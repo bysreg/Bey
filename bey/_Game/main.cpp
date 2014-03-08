@@ -1,23 +1,7 @@
+#include "Rendering\IRendering.h"
+#include "Rendering\Rendering.h"
+
 #include <windows.h>
-#include <windowsx.h>
-#include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx10.h>
-
-// include the Direct3D Library file
-#pragma comment (lib, "d3d11.lib")
-#pragma comment (lib, "d3dx11.lib")
-#pragma comment (lib, "d3dx10.lib")
-
-// global declarations
-IDXGISwapChain *g_SwapChain;             // the pointer to the swap chain interface
-ID3D11Device *g_Device;                     // the pointer to our Direct3D device interface
-ID3D11DeviceContext *g_DeviceContext;           // the pointer to our Direct3D device context
-ID3D11RenderTargetView *g_BackBuffer;    // global declaration
-
-// function prototypes
-void InitD3D(HWND hWnd);     // sets up and initializes Direct3D
-void CleanD3D(void);         // closes Direct3D and releases memory
 
 // the WindowProc function prototype
 LRESULT CALLBACK WindowProc(HWND hWnd,
@@ -25,91 +9,15 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 	WPARAM wParam,
 	LPARAM lParam);
 
-// this function initializes and prepares Direct3D for use
-void InitD3D(HWND hWnd) 
-{
-	// create a struct to hold information about the swap chain
-	DXGI_SWAP_CHAIN_DESC swapChainDesc;
-
-	// clear out the struct for use
-	ZeroMemory(&swapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
-
-	// fill the swap chain description struct
-	swapChainDesc.BufferCount = 1;                                    // one back buffer
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;     // use 32-bit color
-	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // how swap chain is to be used (draw to back buffer)
-	swapChainDesc.OutputWindow = hWnd;                                // the window to be used
-	swapChainDesc.SampleDesc.Count = 4;                               // how many multisamples (for anti-aliasing, guaranteed support up to 4, minimum 1)
-	swapChainDesc.Windowed = TRUE;                                    // windowed/full-screen mode
-
-	// create a device, device context and swap chain using the information in the swapChainDesc struct
-	D3D11CreateDeviceAndSwapChain(NULL, // use default adapter (there might be more than one graphics adapter)
-		D3D_DRIVER_TYPE_HARDWARE, // use GPU hardware for rendering
-		NULL,
-		NULL, // flags 
-		NULL, // feature level list
-		NULL, // number of elements in feature level list
-		D3D11_SDK_VERSION, // sdk version
-		&swapChainDesc, // pointer to pointer to swap chain description struct
-		&g_SwapChain, // pointer to pointer to swap chain object
-		&g_Device, // pointer to pointer to device object
-		NULL, // pointer to feature level variable 
-		&g_DeviceContext); // pointer to pointer device context object
-
-	// get the address of the back buffer (number 0)
-	ID3D11Texture2D *pBackBuffer;
-	g_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-
-	// use the back buffer address to create the render target
-	g_Device->CreateRenderTargetView(pBackBuffer, NULL, &g_BackBuffer);
-	pBackBuffer->Release(); // destroy the com object used to access the back buffer (the back buffer itself is not destroyed)
-
-	// set the render target as the back buffer
-	g_DeviceContext->OMSetRenderTargets(1, &g_BackBuffer, NULL);
-
-	// Set the viewport
-	D3D11_VIEWPORT viewport;
-	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
-
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.Width = 800;
-	viewport.Height = 600;
-
-	g_DeviceContext->RSSetViewports(1, &viewport);
-}
-
-// cleans up Direct3D and COM
-void CleanD3D()
-{
-	// close and release all existing COM objects
-	g_SwapChain->Release();
-	g_BackBuffer->Release();
-	g_Device->Release();
-	g_DeviceContext->Release();
-}
-
-// this is the function used to render a single frame
-void RenderFrame(void)
-{
-	// clear the back buffer to a deep blue
-	g_DeviceContext->ClearRenderTargetView(g_BackBuffer, D3DXCOLOR(0.0f, 0.2f, 0.4f, 1.0f));
-
-	// do 3D rendering on the back buffer here
-
-	// switch the back buffer and the front buffer
-	g_SwapChain->Present(0, 0);
-}
-
 int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this application
 	HINSTANCE hPrevInstance, // obsolete
 	LPSTR lpCmdLine, // long pointer to the command line string
 	int nCmdShow) // how window appear when created
 {
-	// the handle for the window, filled by a function
-	HWND hWnd;
-	// this struct holds information for the window class
-	WNDCLASSEX wc;
+	int screenWidth = 500;
+	int screenHeight = 400;	
+	HWND hWnd; // the handle for the window, filled by a function	
+	WNDCLASSEX wc; // this struct holds information for the window class
 
 	// clear out the window class for use
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
@@ -126,7 +34,7 @@ int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this appl
 	// register the window class
 	RegisterClassEx(&wc);
 
-	RECT wr = { 0, 0, 500, 400 };    // set the client size, but not the position
+	RECT wr = { 0, 0, screenWidth, screenHeight };    // set the client size, but not the position
 	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // adjust the size
 
 	// create the window and use the result as the handle
@@ -136,8 +44,8 @@ int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this appl
 		WS_OVERLAPPEDWINDOW,    // window style
 		300,    // x-position of the window
 		300,    // y-position of the window
-		500,    // width of the window
-		400,    // height of the window
+		screenWidth,    // width of the window
+		screenHeight,    // height of the window
 		NULL,    // we have no parent window, NULL
 		NULL,    // we aren't using menus, NULL
 		hInstance,    // application handle
@@ -147,7 +55,11 @@ int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this appl
 	ShowWindow(hWnd, nCmdShow);
 
 	// initialize direct3D
-	InitD3D(hWnd);
+	bey::RenderingInitData data;
+	data.screenHeight = screenHeight;
+	data.screenWidth = screenWidth;
+	data.handleWindow = hWnd;
+	bey::Rendering::GetInstance().Init(data);
 
 	// enter the main loop:
 
@@ -168,11 +80,12 @@ int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this appl
 			if (msg.message == WM_QUIT)
 				break;
 		}		
-		RenderFrame();
+		//bey::IRendering& test = bey::Rendering::GetInstance();
+		bey::Rendering::GetInstance().Render();
 	}
 
 	// release direct 3d resources
-	CleanD3D();
+	bey::Rendering::GetInstance().Clean();
 
 	// return this part of the WM_QUIT message to Windows
 	return msg.wParam;
