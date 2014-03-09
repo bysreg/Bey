@@ -5,7 +5,6 @@
 
 using namespace bey;
 
-// include the Direct3D Library file
 #pragma comment (lib, "d3d11.lib")
 
 D3DRendering::D3DRendering() : 
@@ -31,10 +30,13 @@ void D3DRendering::Init(const RenderingInitData& data)
 	// fill the swap chain description struct
 	swapChainDesc.BufferCount = 1;                                    // one back buffer
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;     // use 32-bit color
+	swapChainDesc.BufferDesc.Width = data.screenWidth;                // set the back buffer width
+	swapChainDesc.BufferDesc.Height = data.screenHeight;              // set the back buffer height
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // how swap chain is to be used (draw to back buffer)
-	swapChainDesc.OutputWindow = data.handleWindow;                                // the window to be used
+	swapChainDesc.OutputWindow = data.handleWindow;                   // the window to be used
 	swapChainDesc.SampleDesc.Count = 4;                               // how many multisamples (for anti-aliasing, guaranteed support up to 4, minimum 1)
 	swapChainDesc.Windowed = TRUE;                                    // windowed/full-screen mode
+	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;     // allow full-screen switching
 
 	// create a device, device context and swap chain using the information in the swapChainDesc struct
 	D3D11CreateDeviceAndSwapChain(NULL, // use default adapter (there might be more than one graphics adapter)
@@ -75,6 +77,8 @@ void D3DRendering::Init(const RenderingInitData& data)
 
 void D3DRendering::Clean()
 {
+	m_SwapChain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode, or we wont able to clean D3D
+
 	// close and release all existing COM objects
 	m_SwapChain->Release();
 	m_BackBuffer->Release();

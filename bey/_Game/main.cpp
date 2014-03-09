@@ -9,14 +9,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 	WPARAM wParam,
 	LPARAM lParam);
 
-int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this application
-	HINSTANCE hPrevInstance, // obsolete
-	LPSTR lpCmdLine, // long pointer to the command line string
-	int nCmdShow) // how window appear when created
-{
-	int screenWidth = 500;
-	int screenHeight = 400;	
-	HWND hWnd; // the handle for the window, filled by a function	
+void CreateMainWindow(const HINSTANCE& hInstance, HWND& hWnd, int screenWidth, int screenHeight) {
 	WNDCLASSEX wc; // this struct holds information for the window class
 
 	// clear out the window class for use
@@ -27,31 +20,39 @@ int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this appl
 	wc.style = CS_HREDRAW | CS_VREDRAW; // tell Windows to redraw the window if it is moved vertically or horizontally
 	wc.lpfnWndProc = WindowProc; //  what function to use when it gets a message from Windows
 	wc.hInstance = hInstance;
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);  // stores the default mouse image for the window class
-	wc.hbrBackground = (HBRUSH)COLOR_WINDOW; // 
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);  // stores the default mouse image for the window class	 
 	wc.lpszClassName = L"WindowClass1";
 
 	// register the window class
 	RegisterClassEx(&wc);
 
 	RECT wr = { 0, 0, screenWidth, screenHeight };    // set the client size, but not the position
-	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // adjust the size
+	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // adjust the size (so that the border is also counted for the size)
 
 	// create the window and use the result as the handle
 	hWnd = CreateWindowEx(NULL,
 		L"WindowClass1",    // name of the window class
 		L"Our First Windowed Program",   // title of the window
 		WS_OVERLAPPEDWINDOW,    // window style
-		300,    // x-position of the window
-		300,    // y-position of the window
-		screenWidth,    // width of the window
-		screenHeight,    // height of the window
+		200,    // x-position of the window
+		200,    // y-position of the window
+		wr.right - wr.left,    // width of the window (including window border)
+		wr.bottom - wr.top,    // height of the window (including window border)
 		NULL,    // we have no parent window, NULL
 		NULL,    // we aren't using menus, NULL
 		hInstance,    // application handle
 		NULL);    // used with multiple windows, NULL
+}
 
-	// display the window on the screen
+int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this application
+	HINSTANCE hPrevInstance, // obsolete
+	LPSTR lpCmdLine, // long pointer to the command line string
+	int nCmdShow) // how window appear when created
+{
+	HWND hWnd;
+	int screenWidth = 800, screenHeight = 600;
+
+	CreateMainWindow(hInstance, hWnd, screenWidth, screenHeight);	
 	ShowWindow(hWnd, nCmdShow);
 
 	// initialize direct3D
@@ -79,12 +80,10 @@ int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this appl
 			// check to see if it's time to quit
 			if (msg.message == WM_QUIT)
 				break;
-		}		
-		//bey::IRendering& test = bey::Rendering::GetInstance();
+		}				
 		bey::Rendering::GetInstance().Render();
 	}
-
-	// release direct 3d resources
+	
 	bey::Rendering::GetInstance().Clean();
 
 	// return this part of the WM_QUIT message to Windows
