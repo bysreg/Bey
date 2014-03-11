@@ -1,7 +1,9 @@
 #include "Rendering\IRendering.h"
 #include "Rendering\Rendering.h"
+#include "Common\Log.h"
 
 #include <windows.h>
+#include <cstdio>
 
 // the WindowProc function prototype
 LRESULT CALLBACK WindowProc(HWND hWnd,
@@ -10,6 +12,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 	LPARAM lParam);
 
 void CreateMainWindow(const HINSTANCE& hInstance, HWND& hWnd, int screenWidth, int screenHeight) {
+	BEY_LOG("MainWindow", "Creating Main Window..");
+
 	WNDCLASSEX wc; // this struct holds information for the window class (wc)
 
 	// clear out the window class for use
@@ -36,8 +40,8 @@ void CreateMainWindow(const HINSTANCE& hInstance, HWND& hWnd, int screenWidth, i
 		L"WindowClass1",    // name of the window class
 		L"Game Title",   // title of the window
 		windowStyle,    // window style
-		200,    // x-position of the window
-		200,    // y-position of the window
+		300,    // x-position of the window
+		100,    // y-position of the window
 		wr.right - wr.left,    // width of the window (including window border)
 		wr.bottom - wr.top,    // height of the window (including window border)
 		NULL,    // we have no parent window, NULL
@@ -48,27 +52,8 @@ void CreateMainWindow(const HINSTANCE& hInstance, HWND& hWnd, int screenWidth, i
 	ShowWindow(hWnd, TRUE);
 }
 
-/*
-int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this application
-	HINSTANCE hPrevInstance, // obsolete
-	LPSTR lpCmdLine, // long pointer to the command line string
-	int nCmdShow) // how window appear when created
+void MainLoop() 
 {
-	HWND hWnd;
-	int screenWidth = 800, screenHeight = 600;
-
-	CreateMainWindow(hInstance, hWnd, screenWidth, screenHeight);	
-	ShowWindow(hWnd, nCmdShow);
-
-	// initialize direct3D
-	bey::RenderingInitData data;
-	data.screenHeight = screenHeight;
-	data.screenWidth = screenWidth;
-	data.handleWindow = hWnd;
-	bey::Rendering::GetInstance().Init(data);
-
-	// enter the main loop:
-
 	// this struct holds Windows event messages
 	MSG msg;
 
@@ -85,16 +70,12 @@ int WINAPI WinMain(HINSTANCE hInstance, // an integer which identifies this appl
 			// check to see if it's time to quit
 			if (msg.message == WM_QUIT)
 				break;
-		}				
+		}
 		bey::Rendering::GetInstance().Render();
 	}
-	
-	bey::Rendering::GetInstance().Clean();
 
-	// return this part of the WM_QUIT message to Windows
-	return msg.wParam;
+	bey::Rendering::GetInstance().Clean();
 }
-*/
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -131,31 +112,7 @@ int main() {
 	bey::Rendering::GetInstance().Init(data);	
 
 	// enter the main loop:
-
-	// this struct holds Windows event messages
-	MSG msg;
-
-	// wait for the next message in the queue, store the result in 'msg'
-	while (true)
-	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-			// translate keystroke messages into the right format
-			TranslateMessage(&msg);
-
-			// send the message to the WindowProc function
-			DispatchMessage(&msg);
-
-			// check to see if it's time to quit
-			if (msg.message == WM_QUIT)
-				break;
-		}
-		bey::Rendering::GetInstance().Render();
-	}
-
-	bey::Rendering::GetInstance().Clean();
-
-	// return this part of the WM_QUIT message to Windows
-	return msg.wParam;
+	MainLoop();
 
 	return 0;
 }
