@@ -66,13 +66,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="D3DShader.h" />
     <ClInclude Include="IRendering.h" />
     <ClInclude Include="D3DRendering.h" />
-    <ClInclude Include="Rendering.h" />
+    <ClInclude Include="IShader.h" />
+    <ClInclude Include="RenderingInitData.h" />
+    <ClInclude Include="ShaderInitData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DRendering.cpp" />
-    <ClCompile Include="Rendering.cpp" />
+    <ClCompile Include="D3DShader.cpp" />
+    <ClCompile Include="ShaderInitData.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

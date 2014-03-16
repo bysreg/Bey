@@ -1,9 +1,9 @@
-#include "Rendering\IRendering.h"
-#include "Rendering\Rendering.h"
+#include "Rendering\D3DRendering.h"
+#include "Rendering\RenderingInitData.h"
 #include "Common\Log.h"
 
+#include <iostream>
 #include <windows.h>
-#include <cstdio>
 
 // the WindowProc function prototype
 LRESULT CALLBACK WindowProc(HWND hWnd,
@@ -12,7 +12,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 	LPARAM lParam);
 
 void CreateMainWindow(const HINSTANCE& hInstance, HWND& hWnd, int screenWidth, int screenHeight) {
-	BEY_LOG("MainWindow", "Creating Main Window..");
+	BEY_LOG("Creating Main Window..");	
 
 	WNDCLASSEX wc; // this struct holds information for the window class (wc)
 
@@ -50,6 +50,7 @@ void CreateMainWindow(const HINSTANCE& hInstance, HWND& hWnd, int screenWidth, i
 		NULL);    // used with multiple windows, NULL	
 
 	ShowWindow(hWnd, TRUE);
+	BEY_LOG("Finish Creating Main Window");	
 }
 
 void MainLoop() 
@@ -99,7 +100,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 int main() {
 	HWND hWnd;
-	HINSTANCE hInstance = GetModuleHandle(NULL);;
+	HINSTANCE hInstance = GetModuleHandle(NULL);
 	int screenWidth = 800, screenHeight = 600;
 
 	CreateMainWindow(hInstance, hWnd, screenWidth, screenHeight);	
@@ -109,10 +110,10 @@ int main() {
 	data.screenHeight = screenHeight;
 	data.screenWidth = screenWidth;
 	data.handleWindow = hWnd;
-	bey::Rendering::GetInstance().Init(data);	
+	bey::Rendering::GetInstance().Init(&data);	
 
 	// enter the main loop:
 	MainLoop();
-
+	
 	return 0;
 }

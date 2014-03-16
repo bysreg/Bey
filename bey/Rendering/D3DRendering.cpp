@@ -1,4 +1,5 @@
 #include "D3DRendering.h"
+#include "RenderingInitData.h"
 #include <windows.h>
 #include <d3d11.h>
 #include <assert.h>
@@ -6,6 +7,8 @@
 using namespace bey;
 
 #pragma comment (lib, "d3d11.lib")
+
+IRendering* D3DRendering::m_Instance = nullptr;
 
 D3DRendering::D3DRendering() : 
 m_SwapChain(NULL), 
@@ -19,7 +22,7 @@ D3DRendering::~D3DRendering()
 {
 }
 
-void D3DRendering::Init(const RenderingInitData& data)
+void D3DRendering::Init(const RenderingInitData* data)
 {	
 	// create a struct to hold information about the swap chain
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
@@ -30,10 +33,10 @@ void D3DRendering::Init(const RenderingInitData& data)
 	// fill the swap chain description struct
 	swapChainDesc.BufferCount = 1;                                    // one back buffer
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;     // use 32-bit color
-	swapChainDesc.BufferDesc.Width = data.screenWidth;                // set the back buffer width
-	swapChainDesc.BufferDesc.Height = data.screenHeight;              // set the back buffer height
+	swapChainDesc.BufferDesc.Width = data->screenWidth;                // set the back buffer width
+	swapChainDesc.BufferDesc.Height = data->screenHeight;              // set the back buffer height
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // how swap chain is to be used (draw to back buffer)
-	swapChainDesc.OutputWindow = data.handleWindow;                   // the window to be used
+	swapChainDesc.OutputWindow = data->handleWindow;                   // the window to be used
 	swapChainDesc.SampleDesc.Count = 4;                               // how many multisamples (for anti-aliasing, guaranteed support up to 4, minimum 1)
 	swapChainDesc.Windowed = TRUE;                                    // windowed/full-screen mode
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;     // allow full-screen switching
@@ -69,8 +72,8 @@ void D3DRendering::Init(const RenderingInitData& data)
 
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
-	viewport.Width = (float) data.screenWidth;
-	viewport.Height = (float) data.screenHeight;
+	viewport.Width = (float) data->screenWidth;
+	viewport.Height = (float) data->screenHeight;
 
 	m_DeviceContext->RSSetViewports(1, &viewport);
 }
@@ -96,4 +99,12 @@ void D3DRendering::Render()
 
 	// switch the back buffer and the front buffer
 	m_SwapChain->Present(0, 0);
+}
+
+IRendering& D3DRendering::GetInstance()
+{
+	if (m_Instance == nullptr) {
+		m_Instance = new D3DRendering;
+	}
+	return *m_Instance;
 }
