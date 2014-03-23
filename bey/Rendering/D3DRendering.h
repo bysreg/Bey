@@ -2,6 +2,8 @@
 
 #include "IRendering.h"
 
+#include <windows.h>
+
 //forward declarations
 struct IDXGISwapChain;
 struct ID3D11Device;
@@ -27,6 +29,9 @@ namespace bey {
 
 		static IRendering& GetInstance();
 	private:		
+		UINT m_4xMsaaQuality;
+		bool m_Enable4xMsaa;
+
 		D3DRendering();
 		~D3DRendering();
 	};
