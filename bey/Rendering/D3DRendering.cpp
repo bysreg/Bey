@@ -6,8 +6,6 @@
 
 using namespace bey;
 
-#pragma comment (lib, "d3d11.lib")
-
 IRendering* D3DRendering::m_Instance = nullptr;
 
 D3DRendering::D3DRendering() : 
@@ -24,6 +22,23 @@ D3DRendering::~D3DRendering()
 
 void D3DRendering::Init(const RenderingInitData* data)
 {	
+	UINT createDeviceFlags = 0;
+#if defined(DEBUG) || defined(_DEBUG)  
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+	D3D_FEATURE_LEVEL featureLevel;
+	HRESULT hr = D3D11CreateDevice(
+		NULL,                 // default adapter
+		D3D_DRIVER_TYPE_HARDWARE,
+		NULL,                 // no software device
+		createDeviceFlags,
+		NULL, NULL,           // default feature level array
+		D3D11_SDK_VERSION,
+		&m_Device,
+		&featureLevel,
+		&m_DeviceContext);
+
 	// create a struct to hold information about the swap chain
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 
@@ -42,9 +57,10 @@ void D3DRendering::Init(const RenderingInitData* data)
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;     // allow full-screen switching
 
 	// create a device, device context and swap chain using the information in the swapChainDesc struct
-	D3D11CreateDeviceAndSwapChain(NULL, // use default adapter (there might be more than one graphics adapter)
+	D3D11CreateDeviceAndSwapChain(
+		NULL, // use default adapter (there might be more than one graphics adapter)
 		D3D_DRIVER_TYPE_HARDWARE, // use GPU hardware for rendering
-		NULL,
+		NULL, // used for supplying a software driver. we use null to use hardware for rendering
 		NULL, // flags 
 		NULL, // feature level list
 		NULL, // number of elements in feature level list
