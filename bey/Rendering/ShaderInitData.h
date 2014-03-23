@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.h>
+#include <string>
 
 namespace bey {
 	enum ShaderType {
@@ -9,12 +10,10 @@ namespace bey {
 	};
 
 	struct ShaderInitData {
-		char* filepath;
+		std::string filepath;
 		ShaderType type;
 #ifdef WIN32
 		LPCSTR shaderProfile;
 #endif
-
-		ShaderInitData();		
 	};
 }
