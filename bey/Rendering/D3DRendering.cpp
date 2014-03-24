@@ -112,24 +112,54 @@ void D3DRendering::Init(const RenderingInitData* data)
 	ReleaseCOM(dxgiFactory);	
 
 	// get the address of the back buffer (number 0)
-	ID3D11Texture2D *pBackBuffer;
-	m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+	ID3D11Texture2D *backBuffer;
+	HR(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer));	
+	HR(m_Device->CreateRenderTargetView(backBuffer, NULL, &m_BackBuffer)); // use the back buffer address to create the render target
+	ReleaseCOM(backBuffer); // destroy the com object used to access the back buffer (the back buffer itself is not destroyed)	
 
-	// use the back buffer address to create the render target
-	m_Device->CreateRenderTargetView(pBackBuffer, NULL, &m_BackBuffer);
-	pBackBuffer->Release(); // destroy the com object used to access the back buffer (the back buffer itself is not destroyed)
+	// Create the depth/stencil buffer and view.
 
-	// set the render target as the back buffer
-	m_DeviceContext->OMSetRenderTargets(1, &m_BackBuffer, NULL);
+	D3D11_TEXTURE2D_DESC depthStencilDesc;
+
+	depthStencilDesc.Width = data->screenWidth;
+	depthStencilDesc.Height = data->screenHeight;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
+	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // unsigned 24-bit depth buffer mapped to the [0, 1] range with 8 bits uint reserved for stencil buffer mapped to the [0, 255]
+
+	// Use 4X MSAA? --must match swap chain MSAA values.
+	if (m_Enable4xMsaa)
+	{
+		depthStencilDesc.SampleDesc.Count = 4;
+		depthStencilDesc.SampleDesc.Quality = m_4xMsaaQuality - 1;
+	}
+	// No MSAA
+	else
+	{
+		depthStencilDesc.SampleDesc.Count = 1;
+		depthStencilDesc.SampleDesc.Quality = 0;
+	}
+
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT; // GPU will be reading and writing to the resource. CPU cannot read or write to resource with this usage. 
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0; // CPU will not be reading or writing to the depth/stencil buffer
+	depthStencilDesc.MiscFlags = 0;
+
+	HR(m_Device->CreateTexture2D(&depthStencilDesc, 0, &m_DepthStencilBuffer));
+	HR(m_Device->CreateDepthStencilView(m_DepthStencilBuffer, 0, &m_DepthStencilView));
+	
+	m_DeviceContext->OMSetRenderTargets(1, &m_BackBuffer, m_DepthStencilView); // Bind the render target view and depth/stencil view to the pipeline.
 
 	// Set the viewport
 	D3D11_VIEWPORT viewport;
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
+	viewport.TopLeftX = 0.0f;
+	viewport.TopLeftY = 0.0f;
 	viewport.Width = (float) data->screenWidth;
 	viewport.Height = (float) data->screenHeight;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
 
 	m_DeviceContext->RSSetViewports(1, &viewport);
 }

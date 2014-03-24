@@ -8,17 +8,21 @@
 struct IDXGISwapChain;
 struct ID3D11Device;
 struct ID3D11DeviceContext;
+struct ID3D11DepthStencilView;
 struct ID3D11RenderTargetView;
+struct ID3D11Texture2D;
 
 namespace bey {
 
 	class D3DRendering : public IRendering {		
 	public:		
 
-		IDXGISwapChain *m_SwapChain;             // the pointer to the swap chain interface
-		ID3D11Device *m_Device;                     // the pointer to our Direct3D device interface
-		ID3D11DeviceContext *m_DeviceContext;           // the pointer to our Direct3D device context
-		ID3D11RenderTargetView *m_BackBuffer;    // pointer to backbuffer
+		IDXGISwapChain* m_SwapChain;
+		ID3D11Device* m_Device;
+		ID3D11DeviceContext* m_DeviceContext;           
+		ID3D11Texture2D* m_DepthStencilBuffer;
+		ID3D11DepthStencilView* m_DepthStencilView;
+		ID3D11RenderTargetView* m_BackBuffer;
 		
 		static IRendering* m_Instance;
 
