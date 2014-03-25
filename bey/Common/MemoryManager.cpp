@@ -1,4 +1,5 @@
 #include "MemoryManager.h"
+#include "Log.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <windows.h>
@@ -75,22 +76,22 @@ void MemoryManager::Dump()
 {
 	unsigned long noTotalBytes = 0;
 
-	esLogMessage("Starting memory dump\n");
+	BEY_LOGF("Starting memory dump\n");
 
 	for (unsigned int i = 0; i < m_noBuffers; i++)
 	{
-		esLogMessage("%4d. 0x%08X: %d bytes(%s: %d)\n", i, (unsigned long)m_dataBuffers[i].pAddress, m_dataBuffers[i].length,
+		BEY_LOGF("%4d. 0x%08X: %d bytes(%s: %d)\n", i, (unsigned long)m_dataBuffers[i].pAddress, m_dataBuffers[i].length,
 			m_dataBuffers[i].fileName, m_dataBuffers[i].line);
 		noTotalBytes += m_dataBuffers[i].length;
 	}
-	esLogMessage("---------------------------\n");
-	esLogMessage("Total: %d buffers, %d bytes\n", m_noBuffers, noTotalBytes);
+	BEY_LOGF("---------------------------\n");
+	BEY_LOGF("Total: %d buffers, %d bytes\n", m_noBuffers, noTotalBytes);
 }
 
 void MemoryManager::SanityCheck(bool bShowStats)
 {
 	if (bShowStats)
-		esLogMessage("Sanity check start...\n");
+		BEY_LOGF("Sanity check start...\n");
 
 	int count = 0;
 	for (unsigned int i = 0; i < m_noBuffers; i++)
@@ -99,7 +100,7 @@ void MemoryManager::SanityCheck(bool bShowStats)
 		temp += m_dataBuffers[i].length;
 		if (memcmp(temp, &CHECK_CODE, 4) != 0)
 		{
-			esLogMessage("memory corruption at 0x%08X: %d bytes(%s: %d)\n", (unsigned long)m_dataBuffers[i].pAddress, m_dataBuffers[i].length,
+			BEY_LOGF("memory corruption at 0x%08X: %d bytes(%s: %d)\n", (unsigned long)m_dataBuffers[i].pAddress, m_dataBuffers[i].length,
 				m_dataBuffers[i].fileName, m_dataBuffers[i].line);
 			count++;
 		}
@@ -107,8 +108,8 @@ void MemoryManager::SanityCheck(bool bShowStats)
 
 	if (bShowStats || count > 0)
 	{
-		esLogMessage("---------------------------\n");
-		esLogMessage("Total: %d corrupted buffers\n", count);
+		BEY_LOGF("---------------------------\n");
+		BEY_LOGF("Total: %d corrupted buffers\n", count);
 	}
 
 	if (count > 0)
@@ -119,7 +120,7 @@ void MemoryManager::SanityCheck(bool bShowStats)
 
 void MemoryManager::Error(char * szMessage)
 {
-	esLogMessage(szMessage);
+	BEY_LOGF(szMessage);
 	switch (MessageBoxA(NULL, szMessage, "Memory Error", MB_ABORTRETRYIGNORE | MB_ICONERROR))
 	{
 	case IDABORT:
