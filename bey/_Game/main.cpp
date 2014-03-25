@@ -1,6 +1,7 @@
 #include "Rendering\D3DRendering.h"
 #include "Rendering\RenderingInitData.h"
 #include "Common\Log.h"
+#include "Common\MemoryManager.h"
 
 #include <iostream>
 #include <windows.h>
@@ -114,6 +115,11 @@ int main() {
 
 	// enter the main loop:
 	MainLoop();
+
+	bey::MemoryManager::GetInstance()->Dump();
+	printf("Press any key...\n");
+	char c;
+	scanf("%c", &c);
 	
 	return 0;
 }

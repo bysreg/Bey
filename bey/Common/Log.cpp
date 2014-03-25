@@ -2,10 +2,7 @@
 #include <cstdarg>
 #include <cstdio>
 
-using namespace bey;
-
-#pragma warning(disable: 4996) /* Disable vsprintf deprecation by MS Compiler */
-void Log(const char* filename, int line, const char* format, ...) {
+void bey::Log(const char* filename, int line, const char* format, ...) {
 	va_list params;
 	char buf[2048];
 
@@ -14,4 +11,3 @@ void Log(const char* filename, int line, const char* format, ...) {
 	printf("%s", buf);	
 	va_end(params);
 }
-#pragma warning(default: 4996) /* Restore default */
