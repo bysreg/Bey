@@ -6,5 +6,9 @@
 #define BEY_LOG_TEST 0
 #endif
 
-#define BEY_LOG(MESSAGE)\
-	do { if (BEY_LOG_TEST) std::cerr << MESSAGE << " (" << __FILE__ << ":" << __LINE__ <<  ")" << std::endl; } while (0)
+#define BEY_LOG(message)\
+	do { if (BEY_LOG_TEST) std::cerr << message << " (" << __FILE__ << ":" << __LINE__ <<  ")" << std::endl; } while (0)
+
+namespace bey {
+	void Log(const char* filename, int line, const char* format, ...);
+}

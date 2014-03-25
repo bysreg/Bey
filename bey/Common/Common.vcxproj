@@ -65,6 +65,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Log.h" />
+    <ClInclude Include="MemoryManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="MemoryManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
