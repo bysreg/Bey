@@ -19,7 +19,12 @@ m_BackBuffer(NULL)
 }
 
 D3DRendering::~D3DRendering()
-{
+{	
+	m_SwapChain->Release();
+	m_Device->Release();
+	m_DeviceContext->Release();
+	m_DepthStencilBuffer->Release();
+	m_DepthStencilView->Release();
 }
 
 void D3DRendering::Init(const RenderingInitData* data)
