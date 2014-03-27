@@ -8,12 +8,10 @@ void * operator new(size_t noBytes)
 	return MemoryManager::GetInstance()->Alloc(noBytes, __FILE__, __LINE__);
 }
 
-
 void * operator new[](size_t noBytes)
 {
 	return MemoryManager::GetInstance()->Alloc(noBytes, __FILE__, __LINE__);
 }
-
 
 void operator delete (void * p)
 {
@@ -30,18 +28,15 @@ void * operator new(size_t noBytes, char * fileName, unsigned long line)
 	return MemoryManager::GetInstance()->Alloc(noBytes, fileName, line);
 }
 
-
 void * operator new[](size_t noBytes, char * fileName, unsigned long line)
 {
 	return MemoryManager::GetInstance()->Alloc(noBytes, fileName, line);
 }
 
-
 void operator delete (void * p, char * fileName, unsigned long line)
 {
 	return MemoryManager::GetInstance()->Free(p);
 }
-
 
 void operator delete[](void * p, char * fileName, unsigned long line)
 {

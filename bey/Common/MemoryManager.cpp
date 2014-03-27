@@ -8,7 +8,6 @@ using namespace bey;
 
 const unsigned long CHECK_CODE = 0X12345678;
 
-
 MemoryManager MemoryManager::ms_Instance;
 
 MemoryManager::MemoryManager()
@@ -66,7 +65,6 @@ void MemoryManager::Free(void * pAddress)
 	}
 
 	// bad pointer (already deleted) deletion
-
 #ifdef _DEBUG
 	Error("Bad pointer deletion\n");
 #endif
@@ -76,7 +74,7 @@ void MemoryManager::Dump()
 {
 	unsigned long noTotalBytes = 0;
 
-	BEY_LOGF("Starting memory dump\n");
+	BEY_LOGF("\nStarting memory dump\n");	
 
 	for (unsigned int i = 0; i < m_noBuffers; i++)
 	{

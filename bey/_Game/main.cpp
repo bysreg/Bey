@@ -1,7 +1,7 @@
+#include "Common\MemoryManager.h"
 #include "Rendering\D3DRendering.h"
 #include "Rendering\RenderingInitData.h"
 #include "Common\Log.h"
-#include "Common\MemoryManager.h"
 
 #include <iostream>
 #include <windows.h>
@@ -97,7 +97,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	// Handle any messages the switch statement didn't
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
-
 
 int main() {
 	HWND hWnd;
