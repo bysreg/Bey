@@ -8,8 +8,6 @@
 
 using namespace bey;
 
-IRendering* D3DRendering::m_Instance = nullptr;
-
 D3DRendering::D3DRendering() : 
 m_SwapChain(NULL), 
 m_Device(NULL), 
@@ -194,8 +192,6 @@ void D3DRendering::Render()
 
 IRendering& D3DRendering::GetInstance()
 {
-	if (m_Instance == nullptr) {
-		m_Instance = new D3DRendering;
-	}
-	return *m_Instance;
+	static D3DRendering instance;
+	return instance;
 }
