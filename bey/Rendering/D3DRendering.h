@@ -22,7 +22,8 @@ namespace bey {
 		virtual void Clean();
 		virtual void Render();
 
-		static IRendering& GetInstance();
+		D3DRendering();
+		~D3DRendering();		
 	private:				
 		IDXGISwapChain* m_SwapChain;
 		ID3D11Device* m_Device;
@@ -31,16 +32,9 @@ namespace bey {
 		ID3D11DepthStencilView* m_DepthStencilView;
 		ID3D11RenderTargetView* m_BackBuffer;
 		UINT m_4xMsaaQuality;
-		bool m_Enable4xMsaa;
-
-		D3DRendering();
-		~D3DRendering();
+		bool m_Enable4xMsaa;		
 
 		D3DRendering(D3DRendering const&); // don't implement
 		void operator=(D3DRendering const&); // don't implement
 	};
-
-#ifdef WIN32
-	typedef D3DRendering Rendering;	
-#endif
 }

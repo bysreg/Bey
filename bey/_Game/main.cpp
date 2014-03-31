@@ -1,10 +1,13 @@
+#include "Framework\WinGameTimer.h"
 #include "Common\MemoryManager.h"
+#include "Common\Log.h"
 #include "Rendering\D3DRendering.h"
 #include "Rendering\RenderingInitData.h"
-#include "Common\Log.h"
-
+#include "GameApp.h"
 #include <iostream>
 #include <windows.h>
+
+static bey::GameApp s_App;
 
 // the WindowProc function prototype
 LRESULT CALLBACK WindowProc(HWND hWnd,
@@ -12,9 +15,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 	WPARAM wParam,
 	LPARAM lParam);
 
-void CreateMainWindow(const HINSTANCE& hInstance, HWND& hWnd, int screenWidth, int screenHeight) {
-	BEY_LOG("Creating Main Window..");	
-
+void CreateMainWindow(HWND* hWnd, int screenWidth, int screenHeight) {
+	BEY_LOG("Creating Main Window..");		
+	
+	HINSTANCE hInstance =  GetModuleHandle(NULL);
 	WNDCLASSEX wc; // this struct holds information for the window class (wc)
 
 	// clear out the window class for use
@@ -37,7 +41,7 @@ void CreateMainWindow(const HINSTANCE& hInstance, HWND& hWnd, int screenWidth, i
 	AdjustWindowRect(&wr, windowStyle, FALSE);    // adjust the size (so that the border is also counted for the size)
 
 	// create the window and use the result as the handle
-	hWnd = CreateWindowEx(NULL,
+	*hWnd = CreateWindowEx(NULL,
 		L"WindowClass1",    // name of the window class
 		L"Game Title",   // title of the window
 		windowStyle,    // window style
@@ -50,7 +54,8 @@ void CreateMainWindow(const HINSTANCE& hInstance, HWND& hWnd, int screenWidth, i
 		hInstance,    // application handle
 		NULL);    // used with multiple windows, NULL	
 
-	ShowWindow(hWnd, TRUE);
+	ShowWindow(*hWnd, TRUE);
+
 	BEY_LOG("Finish Creating Main Window");	
 }
 
@@ -58,6 +63,9 @@ void MainLoop()
 {
 	// this struct holds Windows event messages
 	MSG msg;
+
+	bey::WinGameTimer timer;
+	timer.Reset();
 
 	// wait for the next message in the queue, store the result in 'msg'
 	while (true)
@@ -73,10 +81,15 @@ void MainLoop()
 			if (msg.message == WM_QUIT)
 				break;
 		}
-		bey::Rendering::GetInstance().Render();
-	}
+		else
+		{
+			timer.Tick();
 
-	bey::Rendering::GetInstance().Clean();
+			//simple game loop
+			s_App.Update(timer.DeltaTime());
+			s_App.Render();
+		}		
+	}	
 }
 
 // this is the main message handler for the program
@@ -99,21 +112,19 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 }
 
 int main() {
-	HWND hWnd;
-	HINSTANCE hInstance = GetModuleHandle(NULL);
 	int screenWidth = 800, screenHeight = 600;
+	HWND hWnd;	
 
-	CreateMainWindow(hInstance, hWnd, screenWidth, screenHeight);	
+	CreateMainWindow(&hWnd, screenWidth, screenHeight);
 
-	// initialize direct3D
-	bey::RenderingInitData data;
-	data.screenHeight = screenHeight;
-	data.screenWidth = screenWidth;
-	data.handleWindow = hWnd;
-	bey::Rendering::GetInstance().Init(&data);	
+	//initialize app
+	s_App.Init(screenWidth, screenHeight, hWnd);
 
 	// enter the main loop:
 	MainLoop();
+
+	// clean app
+	s_App.Clean();
 
 	bey::MemoryManager::GetInstance()->Dump();
 	printf("Press any key...\n");

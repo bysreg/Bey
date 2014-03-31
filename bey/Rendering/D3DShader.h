@@ -6,7 +6,7 @@
 struct ID3D10Blob;
 
 namespace bey {
-	class D3DShader : IShader
+	class D3DShader : public IShader
 	{
 	public:
 		//override interface

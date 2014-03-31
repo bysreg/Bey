@@ -17,12 +17,7 @@ m_BackBuffer(NULL)
 }
 
 D3DRendering::~D3DRendering()
-{	
-	m_SwapChain->Release();
-	m_Device->Release();
-	m_DeviceContext->Release();
-	m_DepthStencilBuffer->Release();
-	m_DepthStencilView->Release();
+{			
 }
 
 void D3DRendering::Init(const RenderingInitData* data)
@@ -176,6 +171,8 @@ void D3DRendering::Clean()
 	m_BackBuffer->Release();
 	m_Device->Release();
 	m_DeviceContext->Release();
+	m_DepthStencilBuffer->Release();
+	m_DepthStencilView->Release();
 }
 
 void D3DRendering::Render()
@@ -188,10 +185,4 @@ void D3DRendering::Render()
 
 	// switch the back buffer and the front buffer
 	m_SwapChain->Present(0, 0);
-}
-
-IRendering& D3DRendering::GetInstance()
-{
-	static D3DRendering instance;
-	return instance;
 }
