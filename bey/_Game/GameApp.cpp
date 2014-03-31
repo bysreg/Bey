@@ -49,7 +49,9 @@ void GameApp::Update(float dt)
 
 void GameApp::Render()
 {
-	m_Rendering->Render();
+	m_Rendering->Clear();
+
+	m_Rendering->SwapBuffer();
 }
 
 void GameApp::CalculateFps(float dt)

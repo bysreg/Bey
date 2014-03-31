@@ -175,14 +175,14 @@ void D3DRendering::Clean()
 	m_DepthStencilView->Release();
 }
 
-void D3DRendering::Render()
+void D3DRendering::Clear()
 {
 	// clear the back buffer to a deep blue
 	float color[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
-	m_DeviceContext->ClearRenderTargetView(m_BackBuffer, color);
+	m_DeviceContext->ClearRenderTargetView(m_BackBuffer, color);	
+}
 
-	// do 3D rendering on the back buffer here
-
-	// switch the back buffer and the front buffer
+void D3DRendering::SwapBuffer()
+{	
 	m_SwapChain->Present(0, 0);
 }
