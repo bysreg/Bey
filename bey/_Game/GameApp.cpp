@@ -2,6 +2,7 @@
 #include "Rendering\D3DRendering.h"
 #include "Rendering\RenderingInitData.h"
 #include <cassert>
+#include <sstream>
 
 using namespace bey;
 
@@ -49,4 +50,33 @@ void GameApp::Update(float dt)
 void GameApp::Render()
 {
 	m_Rendering->Render();
+}
+
+void GameApp::CalculateFps(float dt)
+{
+	// Code computes the average frames per second, and also the 
+	// average time it takes to render one frame.  These stats 
+	// are appended to the window caption bar.
+
+	static int frameCount = 0;
+	static float timeElapsed = 0.0f;
+
+	frameCount++;
+	timeElapsed += dt;
+
+	if (timeElapsed >= 1.0f)
+	{
+		float fps = (float)frameCount; // fps = frameCnt / 1
+		float mspf = 1000.0f / fps;
+
+		std::wostringstream outs;
+		outs.precision(6);
+		outs << L"FPS: " << fps << L"    "
+			<< L"Frame Time: " << mspf << L" (ms)";
+		SetWindowText(m_Hwnd, outs.str().c_str());
+
+		// Reset for next average.
+		frameCount = 0;
+		timeElapsed -= 1.0f;
+	}	
 }

@@ -84,6 +84,7 @@ void MainLoop()
 		else
 		{
 			timer.Tick();
+			s_App.CalculateFps(timer.DeltaTime());
 
 			//simple game loop
 			s_App.Update(timer.DeltaTime());

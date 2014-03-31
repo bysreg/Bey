@@ -5,7 +5,7 @@ namespace bey {
 	public :		
 
 		// return elapsed time from the last tick
-		virtual float DeltaTime() const = 0;
+		virtual float DeltaTime() const = 0; // in second
 
 		virtual void Reset() = 0; // reset and start timer
 		

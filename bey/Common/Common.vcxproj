@@ -67,7 +67,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MemoryOperator.h" />

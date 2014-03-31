@@ -18,6 +18,8 @@ namespace bey {
 		//overload
 		virtual void Init(int width, int height, HWND hWnd);
 
+		void CalculateFps(float dt);
+
 		GameApp();		
 	private:
 		int m_Width;
