@@ -14,6 +14,6 @@ namespace bey {
 		virtual void Clear() = 0;
 
 		// switch the back buffer and the front buffer
-		virtual void SwapBuffer() = 0;		
+		virtual void SwapBuffer() = 0;
 	};
 }

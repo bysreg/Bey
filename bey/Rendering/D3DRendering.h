@@ -25,6 +25,10 @@ namespace bey {
 
 		D3DRendering();
 		~D3DRendering();
+
+		//specific d3d
+		ID3D11Device* GetDevice();
+
 	private:				
 		IDXGISwapChain* m_SwapChain;
 		ID3D11Device* m_Device;

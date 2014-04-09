@@ -20,6 +20,8 @@ D3DRendering::~D3DRendering()
 {			
 }
 
+//initialize for rendering component
+//assume d3d11 compatible
 void D3DRendering::Init(const RenderingInitData* data)
 {	
 	UINT createDeviceFlags = 0;
@@ -185,4 +187,9 @@ void D3DRendering::Clear()
 void D3DRendering::SwapBuffer()
 {	
 	m_SwapChain->Present(0, 0);
+}
+
+ID3D11Device* D3DRendering::GetDevice()
+{
+	return m_Device;
 }

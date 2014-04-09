@@ -80,8 +80,10 @@
     <ClInclude Include="IRendering.h" />
     <ClInclude Include="D3DRendering.h" />
     <ClInclude Include="IShader.h" />
+    <ClInclude Include="RenderingDataType.h" />
     <ClInclude Include="RenderingInitData.h" />
     <ClInclude Include="ShaderInitData.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DRendering.cpp" />
