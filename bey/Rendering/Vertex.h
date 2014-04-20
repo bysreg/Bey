@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderingDataType.h"
+#include "Common\DataTypeDefs.h"
 
 namespace bey {
 
