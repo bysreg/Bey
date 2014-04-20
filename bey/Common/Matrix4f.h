@@ -1,9 +1,11 @@
 #pragma once
 
 #include "DataTypeDefs.h"
-#include "Vector3f.h"
 
 namespace bey {
+	//forward declarations
+	struct Vector3f;
+
 	class Matrix4f {
 	public:
 		//constructors
@@ -23,11 +25,11 @@ namespace bey {
 		Matrix4f & SetScale(BeyFloat scale);
 		Matrix4f & SetScale(BeyFloat scaleX, BeyFloat scaleY, BeyFloat scaleZ);
 		Matrix4f & SetScale(const BeyFloat * pScale);
-		Matrix4f & SetScale(const Vector3f &scaleVec);
+		Matrix4f & SetScale(const Vector3f * scaleVec);
 
 		Matrix4f & SetTranslation(BeyFloat x, BeyFloat y, BeyFloat z);
 		Matrix4f & SetTranslation(const BeyFloat *pTrans);
-		Matrix4f & SetTranslation(const Vector3f &vec);
+		Matrix4f & SetTranslation(const Vector3f * vec);
 
 		Matrix4f & SetPerspective(BeyFloat fovY, BeyFloat aspect, BeyFloat nearPlane, BeyFloat farPlane);
 

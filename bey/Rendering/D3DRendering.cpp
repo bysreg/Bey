@@ -1,5 +1,6 @@
 #include "D3DRendering.h"
 #include "RenderingInitData.h"
+#include "BufferDesc.h"
 #include "D3DUtil.h"
 #include <windows.h>
 #include <d3d11.h>
@@ -187,6 +188,15 @@ void D3DRendering::Clear()
 void D3DRendering::SwapBuffer()
 {	
 	m_SwapChain->Present(0, 0);
+}
+
+void D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
+{
+	D3D11_BUFFER_DESC bd;	
+	bd.Usage = BufferDesc::ConvertEBufferUsage(bufferDesc->usage);
+	bd.ByteWidth = bufferDesc->byteSize;
+	bd.BindFlags = BufferDesc::ConvertEBufferType(bufferDesc->type);
+	// TODO : not yet finished
 }
 
 ID3D11Device* D3DRendering::GetDevice()

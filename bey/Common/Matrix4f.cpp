@@ -1,4 +1,5 @@
 #include "Matrix4f.h"
+#include "Vector3f.h"
 
 using namespace bey;
 
@@ -157,11 +158,11 @@ Matrix4f & Matrix4f::SetScale(const BeyFloat * pScale)
 	return *this;
 }
 
-Matrix4f & Matrix4f::SetScale(const Vector3f & scaleVec)
+Matrix4f & Matrix4f::SetScale(const Vector3f * scaleVec)
 {
-	m[0][0] = scaleVec.x; m[0][1] = 0.0f;       m[0][2] = 0.0f;       m[0][3] = 0.0f;
-	m[1][0] = 0.0f;       m[1][1] = scaleVec.y; m[1][2] = 0.0f;       m[1][3] = 0.0f;
-	m[2][0] = 0.0f;       m[2][1] = 0.0f;       m[2][2] = scaleVec.z; m[2][3] = 0.0f;
+	m[0][0] = scaleVec->x; m[0][1] = 0.0f;       m[0][2] = 0.0f;       m[0][3] = 0.0f;
+	m[1][0] = 0.0f;       m[1][1] = scaleVec->y; m[1][2] = 0.0f;       m[1][3] = 0.0f;
+	m[2][0] = 0.0f;       m[2][1] = 0.0f;       m[2][2] = scaleVec->z; m[2][3] = 0.0f;
 	m[3][0] = 0.0f;       m[3][1] = 0.0f;       m[3][2] = 0.0f;       m[3][3] = 1.0f;
 
 	return *this;
@@ -187,12 +188,12 @@ Matrix4f & Matrix4f::SetTranslation(const BeyFloat *pTrans)
 	return *this;
 }
 
-Matrix4f & Matrix4f::SetTranslation(const Vector3f &vec)
+Matrix4f & Matrix4f::SetTranslation(const Vector3f * vec)
 {
 	m[0][0] = 1.0f; m[0][1] = 0.0f; m[0][2] = 0.0f; m[0][3] = 0.0f;
 	m[1][0] = 0.0f; m[1][1] = 1.0f; m[1][2] = 0.0f; m[1][3] = 0.0f;
 	m[2][0] = 0.0f; m[2][1] = 0.0f; m[2][2] = 1.0f; m[2][3] = 0.0f;
-	m[3][0] = vec.x; m[3][1] = vec.y; m[3][2] = vec.z; m[3][3] = 1.0f;
+	m[3][0] = vec->x; m[3][1] = vec->y; m[3][2] = vec->z; m[3][3] = 1.0f;
 
 	return *this;
 }

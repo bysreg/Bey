@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IRendering.h"
-
 #include <windows.h>
 
 //forward declarations
@@ -21,7 +20,8 @@ namespace bey {
 		virtual void Init(const RenderingInitData* data);
 		virtual void Clean();
 		virtual void Clear();
-		virtual void SwapBuffer();		
+		virtual void SwapBuffer();	
+		virtual void CreateBuffer(const BufferDesc* bufferDesc);
 
 		D3DRendering();
 		~D3DRendering();

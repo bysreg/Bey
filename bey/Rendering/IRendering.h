@@ -4,6 +4,7 @@ namespace bey {
 
 	//forward declarations for namespace bey
 	struct RenderingInitData;
+	struct BufferDesc;
 
 	class IRendering {
 	public:
@@ -15,5 +16,8 @@ namespace bey {
 
 		// switch the back buffer and the front buffer
 		virtual void SwapBuffer() = 0;
+
+		// create a buffer to be bound to the graphics pipeline
+		virtual void CreateBuffer(const BufferDesc* bufferDesc) = 0;
 	};
 }

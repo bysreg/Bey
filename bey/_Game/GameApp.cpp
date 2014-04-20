@@ -63,7 +63,7 @@ void GameApp::Init(int width, int height, HWND hWnd)
 
 	D3D11_SUBRESOURCE_DATA vinitData;
 	vinitData.pSysMem = vertices;
-
+	
 	ID3D11Buffer* vb;
 	//HR(m_Rendering->GetDevice());
 }
