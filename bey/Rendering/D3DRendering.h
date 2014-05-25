@@ -22,6 +22,7 @@ namespace bey {
 		virtual void Clear();
 		virtual void SwapBuffer();	
 		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc);
+		virtual void BindBuffer(const Buffer& buffer, int slot);
 
 		D3DRendering();
 		~D3DRendering();

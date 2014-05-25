@@ -14,13 +14,17 @@ namespace bey {
 		E_BT_INDEX_BUFFER, 
 	};
 
+	//simple data-only variables
 	struct BufferDesc {
+		// mandatory data
 		E_BUFFER_USAGE usage;
 		E_BUFFER_TYPE type;
 		const void* data;
-		BeyUint byteSize;
+		BeyUint totalByteSize;
+		BeyUint elementByteSize; // size of an element in the buffer in bytes
 
 #ifdef DIRECT3D
+		//convert types to D3D11 corresponding types
 		static D3D11_USAGE ConvertEBufferUsage(E_BUFFER_USAGE usage);
 		static D3D11_BIND_FLAG ConvertEBufferType(E_BUFFER_TYPE type);
 #endif

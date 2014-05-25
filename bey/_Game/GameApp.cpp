@@ -57,7 +57,8 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	// vertex buffer desc
 	BufferDesc vbd; 
 	vbd.usage = E_BU_IMMUTABLE;
-	vbd.byteSize = sizeof(VertexColor)* 8;
+	vbd.totalByteSize = sizeof(VertexColor)* 8;
+	vbd.elementByteSize = sizeof(VertexColor);
 	vbd.type = E_BT_VERTEX_BUFFER;
 	vbd.data = vertices;
 	
@@ -93,7 +94,8 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	//index buffer desc
 	BufferDesc ibd;
 	ibd.usage = E_BU_IMMUTABLE;
-	ibd.byteSize = sizeof(BeyUint)* 36;
+	ibd.totalByteSize = sizeof(BeyUint)* 36;
+	ibd.elementByteSize = sizeof(BeyUint);
 	ibd.type = E_BT_INDEX_BUFFER;
 	ibd.data = indices;
 	

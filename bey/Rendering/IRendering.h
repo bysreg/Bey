@@ -20,5 +20,8 @@ namespace bey {
 
 		// create a buffer to be bound to the graphics pipeline
 		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc) = 0;
+
+		// bind the buffer to the graphics pipeline
+		virtual void BindBuffer(const Buffer& buffer, int slot) = 0;
 	};
 }

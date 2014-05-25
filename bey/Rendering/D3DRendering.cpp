@@ -195,7 +195,7 @@ Buffer* D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
 {
 	D3D11_BUFFER_DESC bd;	
 	bd.Usage = BufferDesc::ConvertEBufferUsage(bufferDesc->usage);
-	bd.ByteWidth = bufferDesc->byteSize;
+	bd.ByteWidth = bufferDesc->totalByteSize;
 	bd.BindFlags = BufferDesc::ConvertEBufferType(bufferDesc->type);
 	bd.CPUAccessFlags = 0; // for now, CPU does not need to read or write to buffer
 	bd.MiscFlags = 0; // no misc flags for now
@@ -208,10 +208,30 @@ Buffer* D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
 	HR(GetDevice()->CreateBuffer(&bd, &initData, &nativeBuffer));
 
 	//store it in our wrapper for native buffer
-	Buffer* buffer = new Buffer;
-	buffer->SetNativeBuffer(nativeBuffer);
+	Buffer* buffer = new Buffer(nativeBuffer, *bufferDesc);		
 
 	return buffer;	
+}
+
+void D3DRendering::BindBuffer(const Buffer& buffer, int slot) 
+{
+	ID3D11Buffer* nativeBuffer = buffer.GetNativeBuffer();
+	switch (buffer.bufferDesc.type) {
+	case E_BT_VERTEX_BUFFER:
+		{
+			UINT stride = buffer.bufferDesc.elementByteSize;
+			UINT offset = 0;
+
+			m_DeviceContext->IASetVertexBuffers(slot, 1, &nativeBuffer, &stride, &offset);
+			break;
+		}
+	case E_BT_INDEX_BUFFER:
+	default:
+		{
+			m_DeviceContext->IASetIndexBuffer(nativeBuffer, DXGI_FORMAT_R32_UINT, 0); // IASetIndexBuffer only allows format DXGI_FORMAT_R_16_UINT or DXGI_FORMAT_R32_UINT
+			break;
+		}
+	}
 }
 
 ID3D11Device* D3DRendering::GetDevice()

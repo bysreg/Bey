@@ -1,24 +1,31 @@
 #pragma once
 
+#include "BufferDesc.h"
+
 //forward declarations
 struct ID3D11Buffer;
 
+#ifdef DIRECT3D
+typedef ID3D11Buffer BeyNativeBuffer; // d3d native buffer
+#else
+	
+#endif
+
 namespace bey {
 
-	//wrapper for GPU buffer
+	// just a wrapper for GPU buffer
 	class Buffer {
 	public:
-		Buffer();		
+		// create a wrapper for GPU buffer. bufferDesc must be the same bufferDesc that is used to create the nativeBuffer
+		Buffer(BeyNativeBuffer* nativeBuffer, const BufferDesc& bufferDesc);
 		virtual ~Buffer();
 
-#ifdef DIRECT3D
-		void SetNativeBuffer(ID3D11Buffer* nativeBuffer);
-#endif
+		const BufferDesc bufferDesc;
+
+		BeyNativeBuffer* GetNativeBuffer() const;
 
 	private:
-#ifdef DIRECT3D
-		ID3D11Buffer* m_NativeBuffer; // d3d native buffer
-#endif
+		BeyNativeBuffer* m_NativeBuffer;
 	};
 
 }
