@@ -3,6 +3,7 @@
 #include "Rendering\RenderingInitData.h"
 #include "Rendering\Vertex.h"
 #include "Rendering\D3DUtil.h"
+#include "Rendering\BufferDesc.h"
 #include <d3d11.h>
 #include <cassert>
 #include <sstream>
@@ -51,21 +52,53 @@ void GameApp::Init(int width, int height, HWND hWnd)
 		{ BeyFloat3(-1.0f, 1.0f, 1.0f), GREEN },
 		{ BeyFloat3(1.0f, 1.0f, 1.0f), GREEN },
 		{ BeyFloat3(1.0f, -1.0f, 1.0f), GREEN },
-	};
+	};	
 
-	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(VertexColor) * 8;
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	vbd.MiscFlags = 0;
-	vbd.StructureByteStride = 0;
-
-	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = vertices;
+	// vertex buffer desc
+	BufferDesc vbd; 
+	vbd.usage = E_BU_IMMUTABLE;
+	vbd.byteSize = sizeof(VertexColor)* 8;
+	vbd.type = E_BT_VERTEX_BUFFER;
+	vbd.data = vertices;
 	
-	ID3D11Buffer* vb;
-	//HR(m_Rendering->GetDevice());
+	Buffer* vb = m_Rendering->CreateBuffer(&vbd);
+	
+	// Create the index buffer
+	BeyUint indices[] = {
+		// front face
+		0, 1, 2,
+		0, 2, 3,
+
+		// back face
+		4, 6, 5,
+		4, 7, 6,
+
+		// left face
+		4, 5, 1,
+		4, 1, 0,
+
+		// right face
+		3, 2, 6,
+		3, 6, 7,
+
+		// top face
+		1, 5, 6,
+		1, 6, 2,
+
+		// bottom face
+		4, 0, 3,
+		4, 3, 7
+	};	
+
+	//index buffer desc
+	BufferDesc ibd;
+	ibd.usage = E_BU_IMMUTABLE;
+	ibd.byteSize = sizeof(BeyUint)* 36;
+	ibd.type = E_BT_INDEX_BUFFER;
+	ibd.data = indices;
+	
+	Buffer* ib = m_Rendering->CreateBuffer(&ibd);
+	// TODO : not finished
 }
 
 void GameApp::Clean()

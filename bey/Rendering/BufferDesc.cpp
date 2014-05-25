@@ -7,7 +7,7 @@ using namespace bey;
 
 D3D11_USAGE BufferDesc::ConvertEBufferUsage(E_BUFFER_USAGE usage) {
 	switch (usage) {
-	case IMMUTABLE : 
+	case E_BU_IMMUTABLE : 
 		return D3D11_USAGE_IMMUTABLE;
 	}
 
@@ -16,8 +16,10 @@ D3D11_USAGE BufferDesc::ConvertEBufferUsage(E_BUFFER_USAGE usage) {
 
 D3D11_BIND_FLAG BufferDesc::ConvertEBufferType(E_BUFFER_TYPE type) {
 	switch (type){
-	case VERTEX_BUFFER:
+	case E_BT_VERTEX_BUFFER:
 		return D3D11_BIND_VERTEX_BUFFER;
+	case E_BT_INDEX_BUFFER:
+		return D3D11_BIND_INDEX_BUFFER;
 	}
 
 	assert(false); // force quit

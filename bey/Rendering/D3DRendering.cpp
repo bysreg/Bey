@@ -2,6 +2,7 @@
 #include "RenderingInitData.h"
 #include "BufferDesc.h"
 #include "D3DUtil.h"
+#include "Buffer.h"
 #include <windows.h>
 #include <d3d11.h>
 #include <assert.h>
@@ -190,13 +191,27 @@ void D3DRendering::SwapBuffer()
 	m_SwapChain->Present(0, 0);
 }
 
-void D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
+Buffer* D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
 {
 	D3D11_BUFFER_DESC bd;	
 	bd.Usage = BufferDesc::ConvertEBufferUsage(bufferDesc->usage);
 	bd.ByteWidth = bufferDesc->byteSize;
 	bd.BindFlags = BufferDesc::ConvertEBufferType(bufferDesc->type);
-	// TODO : not yet finished
+	bd.CPUAccessFlags = 0; // for now, CPU does not need to read or write to buffer
+	bd.MiscFlags = 0; // no misc flags for now
+	bd.StructureByteStride = 0; // always 0 for now
+
+	D3D11_SUBRESOURCE_DATA initData;
+	initData.pSysMem = bufferDesc->data;
+
+	ID3D11Buffer* nativeBuffer;
+	HR(GetDevice()->CreateBuffer(&bd, &initData, &nativeBuffer));
+
+	//store it in our wrapper for native buffer
+	Buffer* buffer = new Buffer;
+	buffer->SetNativeBuffer(nativeBuffer);
+
+	return buffer;	
 }
 
 ID3D11Device* D3DRendering::GetDevice()

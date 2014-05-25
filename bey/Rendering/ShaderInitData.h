@@ -12,7 +12,7 @@ namespace bey {
 	struct ShaderInitData {
 		std::string filepath;
 		ShaderType type;
-#ifdef WIN32
+#ifdef OS_WIN32
 		LPCSTR shaderProfile;
 #endif
 	};

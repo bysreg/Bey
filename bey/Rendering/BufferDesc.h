@@ -6,11 +6,12 @@
 namespace bey {
 
 	enum E_BUFFER_USAGE {
-		IMMUTABLE = 0,
+		E_BU_IMMUTABLE = 0, // BU stands for buffer usage
 	};
 
 	enum E_BUFFER_TYPE {
-		VERTEX_BUFFER = 0, 
+		E_BT_VERTEX_BUFFER = 0, // BT stands for buffer type
+		E_BT_INDEX_BUFFER, 
 	};
 
 	struct BufferDesc {

@@ -21,7 +21,7 @@ namespace bey {
 		virtual void Clean();
 		virtual void Clear();
 		virtual void SwapBuffer();	
-		virtual void CreateBuffer(const BufferDesc* bufferDesc);
+		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc);
 
 		D3DRendering();
 		~D3DRendering();
