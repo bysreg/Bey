@@ -6,6 +6,7 @@ namespace bey {
 	struct RenderingInitData;
 	struct BufferDesc;
 	class Buffer;
+	class RenderData;
 
 	class IRendering {
 	public:
@@ -23,5 +24,8 @@ namespace bey {
 
 		// bind the buffer to the graphics pipeline
 		virtual void BindBuffer(const Buffer& buffer, int slot) = 0;
+
+		// render to screen
+		virtual void Render(const RenderData& renderData) = 0;
 	};
 }

@@ -29,7 +29,9 @@ void GameApp::Init()
 	data.screenWidth = m_Width;
 	data.handleWindow = m_Hwnd;
 
-	m_Rendering->Init(&data);	
+	m_Rendering->Init(&data);
+	// TODO : compile the necessary shaders
+	//m_Rendering->
 }
 
 void GameApp::Init(int width, int height, HWND hWnd)
@@ -110,12 +112,13 @@ void GameApp::Clean()
 
 void GameApp::Update(float dt)
 {
-
 }
 
 void GameApp::Render()
 {
 	m_Rendering->Clear();
+
+	// TODO : compile runtime shader
 
 	m_Rendering->SwapBuffer();
 }

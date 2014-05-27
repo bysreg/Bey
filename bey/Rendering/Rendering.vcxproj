@@ -83,6 +83,7 @@
     <ClInclude Include="IRendering.h" />
     <ClInclude Include="D3DRendering.h" />
     <ClInclude Include="IShader.h" />
+    <ClInclude Include="RenderData.h" />
     <ClInclude Include="RenderingInitData.h" />
     <ClInclude Include="ShaderInitData.h" />
     <ClInclude Include="Vertex.h" />

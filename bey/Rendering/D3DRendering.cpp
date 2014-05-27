@@ -3,6 +3,7 @@
 #include "BufferDesc.h"
 #include "D3DUtil.h"
 #include "Buffer.h"
+#include "RenderData.h"
 #include <windows.h>
 #include <d3d11.h>
 #include <assert.h>
@@ -231,6 +232,17 @@ void D3DRendering::BindBuffer(const Buffer& buffer, int slot)
 			m_DeviceContext->IASetIndexBuffer(nativeBuffer, DXGI_FORMAT_R32_UINT, 0); // IASetIndexBuffer only allows format DXGI_FORMAT_R_16_UINT or DXGI_FORMAT_R32_UINT
 			break;
 		}
+	}
+}
+
+void D3DRendering::Render(const RenderData& renderData)
+{
+	switch (renderData.renderType) {
+	case E_USE_INDEX_BUFFER:
+	default:
+		// TODO : temporarily default to use index buffer. should be to vertex buffer only though
+		m_DeviceContext->DrawIndexed(renderData.indexCount, 0, 0);
+		break;
 	}
 }
 
