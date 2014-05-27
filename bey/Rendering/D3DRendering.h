@@ -24,6 +24,7 @@ namespace bey {
 		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc);
 		virtual void BindBuffer(const Buffer& buffer, int slot);
 		virtual void Render(const RenderData& renderData);
+		virtual void CompileShader(const CompileShaderData& compileShaderData);
 
 		D3DRendering();
 		~D3DRendering();

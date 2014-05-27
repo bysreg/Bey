@@ -7,6 +7,7 @@ namespace bey {
 	struct BufferDesc;
 	class Buffer;
 	class RenderData;
+	class CompileShaderData;
 
 	class IRendering {
 	public:
@@ -27,5 +28,8 @@ namespace bey {
 
 		// render to screen
 		virtual void Render(const RenderData& renderData) = 0;
+
+		// compile shader at runtime
+		virtual void CompileShader(const CompileShaderData& compileShaderData) = 0;
 	};
 }

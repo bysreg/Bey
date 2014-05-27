@@ -4,8 +4,10 @@
 #include "D3DUtil.h"
 #include "Buffer.h"
 #include "RenderData.h"
+#include "CompileShaderData.h"
 #include <windows.h>
 #include <d3d11.h>
+#include <d3dcompiler.h>
 #include <assert.h>
 #include <cstdio>
 
@@ -244,6 +246,33 @@ void D3DRendering::Render(const RenderData& renderData)
 		m_DeviceContext->DrawIndexed(renderData.indexCount, 0, 0);
 		break;
 	}
+}
+
+void D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
+{
+	// TODO : not yet fully implemented
+	ID3DBlob* blob = nullptr;
+
+	UINT flags = D3DCOMPILE_ENABLE_STRICTNESS; // what is this ? 
+#if defined(DEBUG) || defined(_DEBUG)
+	flags |= D3DCOMPILE_DEBUG;
+#endif
+
+	//convert filename to wide string
+
+	/*LPCWSTR l_filename = 
+
+	ID3DBlob* shaderBlob = nullptr;
+	ID3DBlob* errorBlob = nullptr;
+	HRESULT hr = D3DCompileFromFile(compileShaderData.filename, 
+						nullptr, 
+						D3D_COMPILE_STANDARD_FILE_INCLUDE,
+						entryPoint, 
+						profile,
+						flags, 
+						0, 
+						&shaderBlob, 
+						&errorBlob);*/
 }
 
 ID3D11Device* D3DRendering::GetDevice()
