@@ -11,8 +11,7 @@ namespace bey {
 	public:
 		//override interface
 		virtual void Init(const ShaderInitData& data);
-		virtual void Clean();
-		virtual void Compile();
+		virtual void Clean();		
 
 		D3DShader();
 		~D3DShader();		

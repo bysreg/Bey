@@ -16,7 +16,7 @@ m_Height(0),
 m_Hwnd(),
 m_Rendering(nullptr)
 {
-	m_Rendering = static_cast<IRendering*>(new D3DRendering);
+	m_Rendering = new D3DRendering;
 }
 
 void GameApp::Init()

@@ -1,10 +1,11 @@
 #include "D3DShader.h"
 #include "ShaderInitData.h"
 #include <d3d11.h>
+#include <D3Dcommon.h>
 
 using namespace bey;
 
-D3DShader::D3DShader() : m_Blob(NULL)
+D3DShader::D3DShader() : m_Blob(nullptr)
 {
 }
 
@@ -20,10 +21,7 @@ void D3DShader::Init(const ShaderInitData& data)
 
 void D3DShader::Clean()
 {
-	delete m_Blob;
-}
-
-void D3DShader::Compile()
-{
-
+	if (m_Blob != nullptr) {
+		m_Blob->Release();
+	}		
 }

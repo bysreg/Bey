@@ -4,7 +4,7 @@
 #include "D3DUtil.h"
 #include "Buffer.h"
 #include "RenderData.h"
-#include "IShader.h"
+#include "D3DShader.h"
 #include <cstring>
 #include <windows.h>
 #include <d3d11.h>
@@ -249,7 +249,7 @@ void D3DRendering::Render(const RenderData& renderData)
 	}
 }
 
-void D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
+IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 {
 	// TODO : not yet fully implemented
 	ID3DBlob* blob = nullptr;
@@ -292,9 +292,25 @@ void D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 						&errorBlob);
 
 	delete[] tempFilename;
+
+	//TODO : error handling
+
+	//create shader object out of the native shader
+	return CreateShader(shaderBlob, compileShaderData.shaderType);
 }
 
 ID3D11Device* D3DRendering::GetDevice()
 {
 	return m_Device;
+}
+
+D3DShader* D3DRendering::CreateShader(ID3DBlob* shaderProgram, E_SHADER_TYPE shaderType)
+{
+	D3DShader* shader = new D3DShader;
+
+	ShaderInitData sid;
+	sid.shaderType = shaderType;
+	sid.nativeProgram = shaderProgram;
+
+	return shader;
 }

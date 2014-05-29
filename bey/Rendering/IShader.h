@@ -2,9 +2,15 @@
 
 #include "Common\DataTypeDefs.h"
 
+//forward declarations
+#ifdef DIRECT3D
+struct ID3D10Blob;
+typedef ID3D10Blob ID3DBlob;
+#endif
+
 namespace bey {
 
-	enum E_SHADER_TYPE {
+	enum E_SHADER_TYPE : unsigned int {
 		E_VERTEX_SHADER = 0,
 		E_FRAGMENT_SHADER,
 	};
@@ -16,7 +22,9 @@ namespace bey {
 
 	struct ShaderInitData {		
 		E_SHADER_TYPE shaderType;
-
+#ifdef DIRECT3D
+		ID3DBlob* nativeProgram;
+#endif
 	};
 
 	class IShader {		

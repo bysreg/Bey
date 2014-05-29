@@ -10,8 +10,14 @@ struct ID3D11DeviceContext;
 struct ID3D11DepthStencilView;
 struct ID3D11RenderTargetView;
 struct ID3D11Texture2D;
+struct ID3D10Blob;
+typedef ID3D10Blob ID3DBlob;
 
 namespace bey {
+
+	//forward declarations for namespace bey
+	class D3DShader;
+	enum E_SHADER_TYPE : unsigned int;
 
 	//singleton
 	class D3DRendering : public IRendering {		
@@ -24,7 +30,7 @@ namespace bey {
 		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc);
 		virtual void BindBuffer(const Buffer& buffer, BeyInt slot);
 		virtual void Render(const RenderData& renderData);
-		virtual void CompileShader(const CompileShaderData& compileShaderData);
+		virtual IShader* CompileShader(const CompileShaderData& compileShaderData);
 
 		D3DRendering();
 		~D3DRendering();
@@ -44,5 +50,7 @@ namespace bey {
 
 		D3DRendering(D3DRendering const&); // don't implement
 		void operator=(D3DRendering const&); // don't implement
+
+		D3DShader* CreateShader(ID3DBlob* shaderProgram, E_SHADER_TYPE shaderType);
 	};
 }
