@@ -10,6 +10,7 @@ typedef int BeyInt;
 typedef unsigned int BeyUint;
 typedef DirectX::XMFLOAT3 BeyFloat3;
 typedef DirectX::XMFLOAT4 BeyFloat4;
+typedef char BeyChar;
 
 #elif
 

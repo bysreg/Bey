@@ -10,7 +10,7 @@ namespace bey {
 	{
 	public:
 		//override interface
-		virtual void Init(const ShaderInitData* data);
+		virtual void Init(const ShaderInitData& data);
 		virtual void Clean();
 		virtual void Compile();
 

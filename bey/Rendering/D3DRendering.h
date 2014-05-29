@@ -22,7 +22,7 @@ namespace bey {
 		virtual void Clear();
 		virtual void SwapBuffer();	
 		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc);
-		virtual void BindBuffer(const Buffer& buffer, int slot);
+		virtual void BindBuffer(const Buffer& buffer, BeyInt slot);
 		virtual void Render(const RenderData& renderData);
 		virtual void CompileShader(const CompileShaderData& compileShaderData);
 

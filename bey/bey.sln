@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rendering", "Rendering\Rendering.vcxproj", "{DB2EBD69-E7FB-4F96-93B3-8C96B26EB9E0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2D94F0BD-705B-4AFD-9F82-8B671F5D58FE} = {2D94F0BD-705B-4AFD-9F82-8B671F5D58FE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_Game", "_Game\_Game.vcxproj", "{9C5C3894-6F7C-45C9-BFAB-2E51999F5C63}"
 	ProjectSection(ProjectDependencies) = postProject

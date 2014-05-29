@@ -53,6 +53,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>DIRECT3D;OS_WIN32;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>Common\MemoryOperator.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,7 +78,6 @@
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="BufferDesc.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CompileShaderData.h" />
     <ClInclude Include="D3DShader.h" />
     <ClInclude Include="D3DUtil.h" />
     <ClInclude Include="DxErr.h" />
@@ -86,7 +86,6 @@
     <ClInclude Include="IShader.h" />
     <ClInclude Include="RenderData.h" />
     <ClInclude Include="RenderingInitData.h" />
-    <ClInclude Include="ShaderInitData.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>

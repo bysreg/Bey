@@ -1,13 +1,15 @@
 #pragma once
 
+#include "Common\DataTypeDefs.h"
+
 namespace bey {
 
 	//forward declarations for namespace bey
 	struct RenderingInitData;
 	struct BufferDesc;
 	class Buffer;
-	class RenderData;
-	class CompileShaderData;
+	struct RenderData;
+	struct CompileShaderData;
 
 	class IRendering {
 	public:
@@ -24,7 +26,7 @@ namespace bey {
 		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc) = 0;
 
 		// bind the buffer to the graphics pipeline
-		virtual void BindBuffer(const Buffer& buffer, int slot) = 0;
+		virtual void BindBuffer(const Buffer& buffer, BeyInt slot) = 0;
 
 		// render to screen
 		virtual void Render(const RenderData& renderData) = 0;

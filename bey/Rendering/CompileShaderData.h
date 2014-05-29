@@ -2,8 +2,5 @@
 
 namespace bey {
 
-	struct CompileShaderData {
-		char* filename;
-	};
 
 }

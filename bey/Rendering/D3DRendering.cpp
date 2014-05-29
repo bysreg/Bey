@@ -4,7 +4,8 @@
 #include "D3DUtil.h"
 #include "Buffer.h"
 #include "RenderData.h"
-#include "CompileShaderData.h"
+#include "IShader.h"
+#include <cstring>
 #include <windows.h>
 #include <d3d11.h>
 #include <d3dcompiler.h>
@@ -216,7 +217,7 @@ Buffer* D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
 	return buffer;	
 }
 
-void D3DRendering::BindBuffer(const Buffer& buffer, int slot) 
+void D3DRendering::BindBuffer(const Buffer& buffer, BeyInt slot) 
 {
 	ID3D11Buffer* nativeBuffer = buffer.GetNativeBuffer();
 	switch (buffer.bufferDesc.type) {
@@ -259,12 +260,28 @@ void D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 #endif
 
 	//convert filename to wide string
+	int filenameLength = strlen(compileShaderData.filepath);
+	wchar_t* tempFilename = new wchar_t[filenameLength + 1]; // temporary buffer to store the filename in LPCWSTR
+	mbstowcs(tempFilename, compileShaderData.filepath, filenameLength);
 
-	/*LPCWSTR l_filename = 
+	//decides entrypoint and shader profile
+	LPCSTR entryPoint = nullptr;
+	LPCSTR profile = nullptr;
+	switch (compileShaderData.shaderType) {
+	case E_FRAGMENT_SHADER:
+		entryPoint = "FS";
+		profile = "ps_5_0"; // pixel shader
+		break;
+	case E_VERTEX_SHADER:
+	default:
+		entryPoint = "VS";
+		profile = "vs_5_0";
+		break;
+	}	
 
 	ID3DBlob* shaderBlob = nullptr;
-	ID3DBlob* errorBlob = nullptr;
-	HRESULT hr = D3DCompileFromFile(compileShaderData.filename, 
+	ID3DBlob* errorBlob = nullptr; // contains compile error if any, or null if success
+	HRESULT hr = D3DCompileFromFile(tempFilename, 
 						nullptr, 
 						D3D_COMPILE_STANDARD_FILE_INCLUDE,
 						entryPoint, 
@@ -272,7 +289,9 @@ void D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 						flags, 
 						0, 
 						&shaderBlob, 
-						&errorBlob);*/
+						&errorBlob);
+
+	delete[] tempFilename;
 }
 
 ID3D11Device* D3DRendering::GetDevice()

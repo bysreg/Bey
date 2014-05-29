@@ -13,9 +13,9 @@ D3DShader::~D3DShader()
 {
 }
 
-void D3DShader::Init(const ShaderInitData* data)
+void D3DShader::Init(const ShaderInitData& data)
 {
-	m_Data = new ShaderInitData(*data);
+	m_Data = new ShaderInitData(data);
 }
 
 void D3DShader::Clean()
