@@ -6,6 +6,7 @@
 namespace bey {
 	//forward declarations
 	class IRendering;
+	class Buffer;
 
 	class GameApp : public App {
 	public:
@@ -20,11 +21,15 @@ namespace bey {
 
 		void CalculateFps(float dt);
 
-		GameApp();		
+		GameApp();
 	private:
 		int m_Width;
 		int m_Height;
 		HWND m_Hwnd;
 		IRendering* m_Rendering;
+
+		//cube
+		Buffer* m_IndexBuffer;
+		Buffer* m_VertexBuffer;
 	};
 }

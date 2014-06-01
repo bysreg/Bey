@@ -217,7 +217,7 @@ Buffer* D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
 	return buffer;	
 }
 
-void D3DRendering::BindBuffer(const Buffer& buffer, BeyInt slot) 
+void D3DRendering::BindBuffer(const Buffer& buffer) 
 {
 	ID3D11Buffer* nativeBuffer = buffer.GetNativeBuffer();
 	switch (buffer.bufferDesc.type) {
@@ -226,7 +226,7 @@ void D3DRendering::BindBuffer(const Buffer& buffer, BeyInt slot)
 			UINT stride = buffer.bufferDesc.elementByteSize;
 			UINT offset = 0;
 
-			m_DeviceContext->IASetVertexBuffers(slot, 1, &nativeBuffer, &stride, &offset);
+			m_DeviceContext->IASetVertexBuffers(0, 1, &nativeBuffer, &stride, &offset);
 			break;
 		}
 	case E_BT_INDEX_BUFFER:

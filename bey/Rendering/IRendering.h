@@ -27,7 +27,7 @@ namespace bey {
 		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc) = 0;
 
 		// bind the buffer to the graphics pipeline
-		virtual void BindBuffer(const Buffer& buffer, BeyInt slot) = 0;
+		virtual void BindBuffer(const Buffer& buffer) = 0;
 
 		// render to screen
 		virtual void Render(const RenderData& renderData) = 0;

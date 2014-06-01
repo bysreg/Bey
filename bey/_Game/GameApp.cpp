@@ -4,6 +4,7 @@
 #include "Rendering\Vertex.h"
 #include "Rendering\D3DUtil.h"
 #include "Rendering\BufferDesc.h"
+#include "Rendering\Buffer.h"
 #include <d3d11.h>
 #include <cassert>
 #include <sstream>
@@ -14,7 +15,9 @@ GameApp::GameApp() :
 m_Width(0), 
 m_Height(0),
 m_Hwnd(),
-m_Rendering(nullptr)
+m_Rendering(nullptr), 
+m_VertexBuffer(nullptr), 
+m_IndexBuffer(nullptr)
 {
 	m_Rendering = new D3DRendering;
 }
@@ -64,7 +67,7 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	vbd.type = E_BT_VERTEX_BUFFER;
 	vbd.data = vertices;
 	
-	Buffer* vb = m_Rendering->CreateBuffer(&vbd);
+	m_VertexBuffer = m_Rendering->CreateBuffer(&vbd);
 	
 	// Create the index buffer
 	BeyUint indices[] = {
@@ -101,13 +104,16 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	ibd.type = E_BT_INDEX_BUFFER;
 	ibd.data = indices;
 	
-	Buffer* ib = m_Rendering->CreateBuffer(&ibd);
+	m_IndexBuffer = m_Rendering->CreateBuffer(&ibd);
 	// TODO : not finished
 }
 
 void GameApp::Clean()
 {
 	m_Rendering->Clean();
+
+	if (m_VertexBuffer != nullptr) delete m_VertexBuffer;
+	if (m_IndexBuffer != nullptr) delete m_IndexBuffer;
 }
 
 void GameApp::Update(float dt)
