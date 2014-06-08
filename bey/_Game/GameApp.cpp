@@ -5,6 +5,7 @@
 #include "Rendering\D3DUtil.h"
 #include "Rendering\BufferDesc.h"
 #include "Rendering\IBuffer.h"
+#include "Rendering\IShader.h"
 #include <d3d11.h>
 #include <cassert>
 #include <sstream>
@@ -33,8 +34,6 @@ void GameApp::Init()
 	data.handleWindow = m_Hwnd;
 
 	m_Rendering->Init(&data);
-	// TODO : compile the necessary shaders
-	//m_Rendering->
 }
 
 void GameApp::Init(int width, int height, HWND hWnd)
@@ -104,8 +103,11 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	ibd.type = E_BT_INDEX_BUFFER;
 	ibd.data = indices;
 	
-	m_IndexBuffer = m_Rendering->CreateBuffer(&ibd);
-	// TODO : not finished
+	m_IndexBuffer = m_Rendering->CreateBuffer(&ibd);		
+
+	CompileShaders();
+
+	// TODO  : build vertex layout
 }
 
 void GameApp::Clean()
@@ -122,9 +124,7 @@ void GameApp::Update(float dt)
 
 void GameApp::Render()
 {
-	m_Rendering->Clear();
-
-	// TODO : compile runtime shader
+	m_Rendering->Clear();	
 
 	m_Rendering->SwapBuffer();
 }
@@ -156,4 +156,19 @@ void GameApp::CalculateFps(float dt)
 		frameCount = 0;
 		timeElapsed -= 1.0f;
 	}	
+}
+
+void GameApp::CompileShaders()
+{
+	CompileShaderData vcsd;
+	vcsd.filepath = "..\\res\\shaders\\src\\simpleVS.hlsl";
+	vcsd.shaderType = E_SHADER_TYPE::E_VERTEX_SHADER;
+	IShader* vs = m_Rendering->CompileShader(vcsd);
+
+	CompileShaderData fcsd;
+	fcsd.filepath = "..\\res\\shaders\\src\\simpleFS.hlsl";
+	fcsd.shaderType = E_SHADER_TYPE::E_FRAGMENT_SHADER;
+	IShader* fs = m_Rendering->CompileShader(fcsd);
+
+	// TODO : save those shaders to class variable 
 }

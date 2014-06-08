@@ -31,5 +31,7 @@ namespace bey {
 		//cube
 		IBuffer* m_IndexBuffer;
 		IBuffer* m_VertexBuffer;
+
+		void CompileShaders();
 	};
 }

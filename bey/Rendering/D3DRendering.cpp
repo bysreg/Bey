@@ -5,6 +5,7 @@
 #include "D3DBuffer.h"
 #include "RenderData.h"
 #include "D3DShader.h"
+#include "Common\Log.h"
 #include <cstring>
 #include <windows.h>
 #include <d3d11.h>
@@ -253,8 +254,7 @@ void D3DRendering::Render(const RenderData& renderData)
 }
 
 IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
-{
-	// TODO : not yet fully implemented
+{	
 	ID3DBlob* blob = nullptr;
 
 	UINT flags = D3DCOMPILE_ENABLE_STRICTNESS; // what is this ? 
@@ -265,7 +265,7 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 	//convert filename to wide string
 	int filenameLength = strlen(compileShaderData.filepath);
 	wchar_t* tempFilename = new wchar_t[filenameLength + 1]; // temporary buffer to store the filename in LPCWSTR
-	mbstowcs(tempFilename, compileShaderData.filepath, filenameLength);
+	int ret = mbstowcs(tempFilename, compileShaderData.filepath, filenameLength + 1);
 
 	//decides entrypoint and shader profile
 	LPCSTR entryPoint = nullptr;
@@ -284,6 +284,7 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 
 	ID3DBlob* shaderBlob = nullptr;
 	ID3DBlob* errorBlob = nullptr; // contains compile error if any, or null if success
+	//TODO : change to just use D3DCompile. which means that we use our own file read of the shader source file
 	HRESULT hr = D3DCompileFromFile(tempFilename, 
 						nullptr, 
 						D3D_COMPILE_STANDARD_FILE_INCLUDE,
@@ -295,8 +296,19 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 						&errorBlob);
 
 	delete[] tempFilename;
-
-	//TODO : error handling
+	
+	if (FAILED(hr))
+	{
+		char* errorMessage = nullptr;
+		if (errorBlob != nullptr)
+			errorMessage = (char*)errorBlob->GetBufferPointer();
+		if (errorMessage != nullptr)
+			BEY_LOGF("compile error on %s => %s\n", compileShaderData.filepath, errorMessage);
+		else
+			BEY_LOGF("compile error on %s\n", compileShaderData.filepath);
+		assert(false); // force quit, the message may show up on console output or log
+		return nullptr; // never reach this
+	}
 
 	//create shader object out of the native shader
 	return CreateShader(shaderBlob, compileShaderData.shaderType);

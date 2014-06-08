@@ -1,10 +1,10 @@
 struct v2f
 {
-	float3 posH : SV_POSITION;
+	float4 posH : SV_POSITION;
 	float4 color : COLOR;
-}
+};
 
-float FS(v2f input) : SV_Target
+float4 FS(v2f input) : SV_TARGET
 {
 	return input.color;
 }
