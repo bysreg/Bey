@@ -4,7 +4,6 @@
 #include "Rendering\Vertex.h"
 #include "Rendering\D3DUtil.h"
 #include "Rendering\BufferDesc.h"
-#include "Rendering\Buffer.h"
 #include <d3d11.h>
 #include <cassert>
 #include <sstream>

@@ -27,6 +27,8 @@ namespace bey {
 		//convert types to D3D11 corresponding types
 		static D3D11_USAGE ConvertEBufferUsage(E_BUFFER_USAGE usage);
 		static D3D11_BIND_FLAG ConvertEBufferType(E_BUFFER_TYPE type);
+#else
+//TODO : 
 #endif
 	};
 }

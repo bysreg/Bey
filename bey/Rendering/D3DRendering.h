@@ -27,8 +27,8 @@ namespace bey {
 		virtual void Clean();
 		virtual void Clear();
 		virtual void SwapBuffer();	
-		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc);
-		virtual void BindBuffer(const Buffer& buffer);
+		virtual IBuffer* CreateBuffer(const BufferDesc* bufferDesc);
+		virtual void BindBuffer(const IBuffer& buffer);
 		virtual void Render(const RenderData& renderData);
 		virtual IShader* CompileShader(const CompileShaderData& compileShaderData);
 

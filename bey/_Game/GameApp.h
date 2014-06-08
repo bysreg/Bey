@@ -6,7 +6,7 @@
 namespace bey {
 	//forward declarations
 	class IRendering;
-	class Buffer;
+	class IBuffer;
 
 	class GameApp : public App {
 	public:
@@ -29,7 +29,7 @@ namespace bey {
 		IRendering* m_Rendering;
 
 		//cube
-		Buffer* m_IndexBuffer;
-		Buffer* m_VertexBuffer;
+		IBuffer* m_IndexBuffer;
+		IBuffer* m_VertexBuffer;
 	};
 }

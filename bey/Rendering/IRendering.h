@@ -7,7 +7,7 @@ namespace bey {
 	//forward declarations for namespace bey
 	struct RenderingInitData;
 	struct BufferDesc;
-	class Buffer;
+	class IBuffer;
 	struct RenderData;
 	struct CompileShaderData;
 	class IShader;
@@ -24,10 +24,10 @@ namespace bey {
 		virtual void SwapBuffer() = 0;
 
 		// create a buffer to be bound to the graphics pipeline
-		virtual Buffer* CreateBuffer(const BufferDesc* bufferDesc) = 0;
+		virtual IBuffer* CreateBuffer(const BufferDesc* bufferDesc) = 0;
 
 		// bind the buffer to the graphics pipeline
-		virtual void BindBuffer(const Buffer& buffer) = 0;
+		virtual void BindBuffer(const IBuffer& buffer) = 0;
 
 		// render to screen
 		virtual void Render(const RenderData& renderData) = 0;

@@ -2,7 +2,7 @@
 #include "RenderingInitData.h"
 #include "BufferDesc.h"
 #include "D3DUtil.h"
-#include "Buffer.h"
+#include "D3DBuffer.h"
 #include "RenderData.h"
 #include "D3DShader.h"
 #include <cstring>
@@ -195,7 +195,7 @@ void D3DRendering::SwapBuffer()
 	m_SwapChain->Present(0, 0);
 }
 
-Buffer* D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
+IBuffer* D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
 {
 	D3D11_BUFFER_DESC bd;	
 	bd.Usage = BufferDesc::ConvertEBufferUsage(bufferDesc->usage);
@@ -212,18 +212,21 @@ Buffer* D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
 	HR(GetDevice()->CreateBuffer(&bd, &initData, &nativeBuffer));
 
 	//store it in our wrapper for native buffer
-	Buffer* buffer = new Buffer(nativeBuffer, *bufferDesc);		
+	IBuffer* buffer = new D3DBuffer;		
+	buffer->Init(nativeBuffer, *bufferDesc);
 
 	return buffer;	
 }
 
-void D3DRendering::BindBuffer(const Buffer& buffer) 
+void D3DRendering::BindBuffer(const IBuffer& buffer) 
 {
 	ID3D11Buffer* nativeBuffer = buffer.GetNativeBuffer();
-	switch (buffer.bufferDesc.type) {
+	BufferDesc bufferDesc;
+	buffer.GetDesc(&bufferDesc);
+	switch (bufferDesc.type) {
 	case E_BT_VERTEX_BUFFER:
 		{
-			UINT stride = buffer.bufferDesc.elementByteSize;
+			UINT stride = bufferDesc.elementByteSize;
 			UINT offset = 0;
 
 			m_DeviceContext->IASetVertexBuffers(0, 1, &nativeBuffer, &stride, &offset);
