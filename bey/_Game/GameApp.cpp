@@ -106,8 +106,7 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	m_IndexBuffer = m_Rendering->CreateBuffer(&ibd);		
 
 	CompileShaders();
-
-	// TODO  : build vertex layout
+	CreateVertexLayout();
 }
 
 void GameApp::Clean()
@@ -171,4 +170,20 @@ void GameApp::CompileShaders()
 	IShader* fs = m_Rendering->CompileShader(fcsd);
 
 	// TODO : save those shaders to class variable 
+}
+
+void GameApp::CreateVertexLayout()
+{
+	// TODO : not yet implemented
+
+	/*D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+	{		
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+
+	D3D11_PASS_DESC passDesc;
+	mTech->GetPassByIndex(0)->GetDesc(&passDesc);
+	HR(m_Rendering->->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature,
+		passDesc.IAInputSignatureSize, &mInputLayout));*/
 }

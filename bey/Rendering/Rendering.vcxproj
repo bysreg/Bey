@@ -67,6 +67,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -78,10 +79,13 @@
     <ClInclude Include="BufferDesc.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="D3DBuffer.h" />
+    <ClInclude Include="D3DInputLayout.h" />
     <ClInclude Include="D3DShader.h" />
     <ClInclude Include="D3DUtil.h" />
     <ClInclude Include="DxErr.h" />
     <ClInclude Include="IBuffer.h" />
+    <ClInclude Include="IInputLayout.h" />
+    <ClInclude Include="InputLayoutDesc.h" />
     <ClInclude Include="IRendering.h" />
     <ClInclude Include="D3DRendering.h" />
     <ClInclude Include="IShader.h" />
@@ -93,6 +97,7 @@
     <ClCompile Include="BufferDesc.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="D3DBuffer.cpp" />
+    <ClCompile Include="D3DInputLayout.cpp" />
     <ClCompile Include="D3DRendering.cpp" />
     <ClCompile Include="D3DShader.cpp" />
     <ClCompile Include="DxErr.cpp" />

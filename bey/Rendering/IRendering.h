@@ -7,11 +7,14 @@ namespace bey {
 	//forward declarations for namespace bey
 	struct RenderingInitData;
 	struct BufferDesc;
-	class IBuffer;
+	struct InputLayoutDesc;
 	struct RenderData;
 	struct CompileShaderData;
+	class IBuffer;
 	class IShader;
+	class IInputLayout;
 
+	// class that responsibles for doing graphics pipeline related tasks
 	class IRendering {
 	public:
 		virtual void Init(const RenderingInitData* data) = 0;
@@ -34,5 +37,10 @@ namespace bey {
 
 		// compile shader at runtime
 		virtual IShader* CompileShader(const CompileShaderData& compileShaderData) = 0;
+
+		// create input layout that feeds vertex data to the graphics pipeline
+		virtual IInputLayout* CreateInputLayout(const InputLayoutDesc& inputLayoutDesc) = 0;
+
+		// TODO : virtual dtor ?
 	};
 }

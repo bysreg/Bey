@@ -31,6 +31,7 @@ namespace bey {
 		virtual void BindBuffer(const IBuffer& buffer);
 		virtual void Render(const RenderData& renderData);
 		virtual IShader* CompileShader(const CompileShaderData& compileShaderData);
+		virtual IInputLayout* CreateInputLayout(const InputLayoutDesc& inputLayoutDesc);
 
 		D3DRendering();
 		~D3DRendering();

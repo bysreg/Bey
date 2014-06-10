@@ -33,5 +33,6 @@ namespace bey {
 		IBuffer* m_VertexBuffer;
 
 		void CompileShaders();
+		void CreateVertexLayout();
 	};
 }

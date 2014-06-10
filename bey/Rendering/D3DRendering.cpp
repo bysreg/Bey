@@ -6,6 +6,8 @@
 #include "RenderData.h"
 #include "D3DShader.h"
 #include "Common\Log.h"
+#include "InputLayoutDesc.h"
+#include "D3DInputLayout.h"
 #include <cstring>
 #include <windows.h>
 #include <d3d11.h>
@@ -312,6 +314,13 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 
 	//create shader object out of the native shader
 	return CreateShader(shaderBlob, compileShaderData.shaderType);
+}
+
+IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc& inputLayoutDesc)
+{
+	// TODO : not yet implemented
+
+	return nullptr;
 }
 
 ID3D11Device* D3DRendering::GetDevice()

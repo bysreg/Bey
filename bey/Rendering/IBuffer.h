@@ -2,7 +2,11 @@
 
 #include <d3d11.h>
 
+#ifdef DIRECT3D
 typedef ID3D11Buffer BeyNativeBuffer;
+#else
+// TODO
+#endif
 
 namespace bey {
 	//forward declarations
