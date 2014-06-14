@@ -16,7 +16,7 @@ namespace bey {
 	class IInputLayout {
 	public :
 		// override interface
-		virtual void Init(BeyNativeInputLayout* nativeInputLayout, const InputLayoutDesc& inputLayoutDesc) = 0;
+		virtual void Init(BeyNativeInputLayout* nativeInputLayout, const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDescNum) = 0;
 		virtual void Clean() = 0;		
 
 		// TODO : virtual dtor ?

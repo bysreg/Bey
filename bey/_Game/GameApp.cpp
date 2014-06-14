@@ -6,6 +6,7 @@
 #include "Rendering\BufferDesc.h"
 #include "Rendering\IBuffer.h"
 #include "Rendering\IShader.h"
+#include "Rendering\InputLayoutDesc.h"
 #include <d3d11.h>
 #include <cassert>
 #include <sstream>
@@ -176,14 +177,13 @@ void GameApp::CreateVertexLayout()
 {
 	// TODO : not yet implemented
 
-	/*D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+	/*InputLayoutDesc vertexDesc[] =
 	{		
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		{ E_IL_POSITION, 0, 0},
+		{ E_IL_COLOR, 0, 12}
 	};
-
-	D3D11_PASS_DESC passDesc;
-	mTech->GetPassByIndex(0)->GetDesc(&passDesc);
+	
+	m_Rendering
 	HR(m_Rendering->->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature,
 		passDesc.IAInputSignatureSize, &mInputLayout));*/
 }

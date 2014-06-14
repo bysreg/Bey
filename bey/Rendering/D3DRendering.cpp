@@ -316,11 +316,29 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 	return CreateShader(shaderBlob, compileShaderData.shaderType);
 }
 
-IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc& inputLayoutDesc)
+IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc)
 {
 	// TODO : not yet implemented
+	D3D11_INPUT_ELEMENT_DESC* d3dDescs = new D3D11_INPUT_ELEMENT_DESC[numInputLayoutDesc];
+	ID3D11InputLayout* nativeInputLayout = nullptr;
+	D3DInputLayout* inputLayout = new D3DInputLayout;
 
-	return nullptr;
+	for (int i = 0; i < numInputLayoutDesc; i++) {
+		d3dDescs[i].SemanticName = D3DInputLayout::ConvertEinputLayoutType(inputLayoutDesc[i].type);
+		d3dDescs[i].SemanticIndex = inputLayoutDesc[i].index;
+		d3dDescs[i].Format = D3DInputLayout::GetSuitableFormatFromType(inputLayoutDesc[i].type);
+		d3dDescs[i].InputSlot = 0;
+		d3dDescs[i].AlignedByteOffset = inputLayoutDesc[i].stride;
+		d3dDescs[i].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		d3dDescs[i].InstanceDataStepRate = 0;
+	}	
+
+	HR(m_Device->CreateInputLayout(d3dDescs, numInputLayoutDesc, nullptr, 0, &nativeInputLayout));
+
+	inputLayout->Init(nativeInputLayout, inputLayoutDesc, numInputLayoutDesc);
+
+	delete[] d3dDescs;
+	return inputLayout;
 }
 
 ID3D11Device* D3DRendering::GetDevice()
