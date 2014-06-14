@@ -68,6 +68,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DataTypeDefs.h" />
+    <ClInclude Include="Debugging.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Matrix4f.h" />
     <ClInclude Include="MemoryManager.h" />
