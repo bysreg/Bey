@@ -16,7 +16,7 @@ void D3DInputLayout::Init(BeyNativeInputLayout* nativeInputLayout, const InputLa
 
 void D3DInputLayout::Clean()
 {
-	delete m_NativeInputLayout;
+	m_NativeInputLayout->Release();
 }
 
 LPCSTR D3DInputLayout::ConvertEinputLayoutType(E_INPUT_LAYOUT_TYPE type)

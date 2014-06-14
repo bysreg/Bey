@@ -43,7 +43,7 @@ void MemoryManager::Free(void * pAddress)
 	//memory overrun checking
 	SanityCheck();
 	// deletion of Null pointer
-	if (pAddress == NULL)
+	if (pAddress == nullptr)
 	{
 		Error("Null pointer deletion\n");
 		return;

@@ -9,7 +9,6 @@ D3DShader::D3DShader() : m_Blob(nullptr)
 {
 }
 
-
 D3DShader::~D3DShader()
 {
 }
@@ -17,6 +16,7 @@ D3DShader::~D3DShader()
 void D3DShader::Init(const ShaderInitData& data)
 {
 	m_Data = new ShaderInitData(data);
+	m_Blob = data.nativeProgram;
 }
 
 void D3DShader::Clean()
@@ -24,4 +24,9 @@ void D3DShader::Clean()
 	if (m_Blob != nullptr) {
 		m_Blob->Release();
 	}		
+}
+
+ID3DBlob* D3DShader::GetCompiledShader()
+{
+	return m_Blob;
 }

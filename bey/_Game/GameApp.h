@@ -7,6 +7,8 @@ namespace bey {
 	//forward declarations
 	class IRendering;
 	class IBuffer;
+	class IInputLayout;
+	class IShader;
 
 	class GameApp : public App {
 	public:
@@ -31,6 +33,9 @@ namespace bey {
 		//cube
 		IBuffer* m_IndexBuffer;
 		IBuffer* m_VertexBuffer;
+		IInputLayout* m_InputLayout;
+		IShader* m_Vs;
+		IShader* m_Fs;
 
 		void CompileShaders();
 		void CreateVertexLayout();

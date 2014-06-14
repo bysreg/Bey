@@ -18,10 +18,10 @@
 using namespace bey;
 
 D3DRendering::D3DRendering() : 
-m_SwapChain(NULL), 
-m_Device(NULL), 
-m_DeviceContext(NULL), 
-m_BackBuffer(NULL)
+m_SwapChain(nullptr), 
+m_Device(nullptr),
+m_DeviceContext(nullptr),
+m_BackBuffer(nullptr)
 {
 }
 
@@ -259,7 +259,7 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 {	
 	ID3DBlob* blob = nullptr;
 
-	UINT flags = D3DCOMPILE_ENABLE_STRICTNESS; // what is this ? 
+	UINT flags = D3DCOMPILE_ENABLE_STRICTNESS; // forbids using deprecated syntax
 #if defined(DEBUG) || defined(_DEBUG)
 	flags |= D3DCOMPILE_DEBUG;
 #endif
@@ -316,9 +316,8 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 	return CreateShader(shaderBlob, compileShaderData.shaderType);
 }
 
-IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc)
+IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc, IShader* compiledShader)
 {
-	// TODO : not yet implemented
 	D3D11_INPUT_ELEMENT_DESC* d3dDescs = new D3D11_INPUT_ELEMENT_DESC[numInputLayoutDesc];
 	ID3D11InputLayout* nativeInputLayout = nullptr;
 	D3DInputLayout* inputLayout = new D3DInputLayout;
@@ -333,7 +332,11 @@ IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc* inputLayout
 		d3dDescs[i].InstanceDataStepRate = 0;
 	}	
 
-	HR(m_Device->CreateInputLayout(d3dDescs, numInputLayoutDesc, nullptr, 0, &nativeInputLayout));
+	D3DShader* d3dCompiledShader = static_cast<D3DShader*>(compiledShader);
+	LPVOID nativeCompiledShaderPointer = d3dCompiledShader->GetCompiledShader()->GetBufferPointer();
+	SIZE_T nativeCompiledShaderSize = d3dCompiledShader->GetCompiledShader()->GetBufferSize();
+
+	HR(m_Device->CreateInputLayout(d3dDescs, numInputLayoutDesc, nativeCompiledShaderPointer, nativeCompiledShaderSize, &nativeInputLayout)); // TODO : which one to use as the input for the pointer to the compiled shader ? the ID3DBlob* or using ID3DBlob::GetBufferPointer ?
 
 	inputLayout->Init(nativeInputLayout, inputLayoutDesc, numInputLayoutDesc);
 
@@ -353,6 +356,8 @@ D3DShader* D3DRendering::CreateShader(ID3DBlob* shaderProgram, E_SHADER_TYPE sha
 	ShaderInitData sid;
 	sid.shaderType = shaderType;
 	sid.nativeProgram = shaderProgram;
+
+	shader->Init(sid);
 
 	return shader;
 }

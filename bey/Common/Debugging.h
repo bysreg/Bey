@@ -13,10 +13,10 @@
 #endif
 
 #ifdef BEY_COMMON_DEBUGGING	
-	#define BEY_DEBUG_BREAK(message)\
-		do {\
-			BEY_LOG(message);\
-			_CrtDbgBreak();\
+	#define BEY_DEBUG_BREAK(message)		\
+		do {								\
+			BEY_LOG(message);				\
+			_CrtDbgBreak();					\
 		} while(0)	
 #else
 

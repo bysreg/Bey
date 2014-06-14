@@ -1,8 +1,9 @@
 #include "GameApp.h"
 #include "Rendering\D3DRendering.h"
+#include "Rendering\D3DInputLayout.h"
+#include "Rendering\D3DUtil.h"
 #include "Rendering\RenderingInitData.h"
 #include "Rendering\Vertex.h"
-#include "Rendering\D3DUtil.h"
 #include "Rendering\BufferDesc.h"
 #include "Rendering\IBuffer.h"
 #include "Rendering\IShader.h"
@@ -113,9 +114,11 @@ void GameApp::Init(int width, int height, HWND hWnd)
 void GameApp::Clean()
 {
 	m_Rendering->Clean();
-
-	if (m_VertexBuffer != nullptr) delete m_VertexBuffer;
-	if (m_IndexBuffer != nullptr) delete m_IndexBuffer;
+	m_VertexBuffer->Clean();	
+	m_IndexBuffer->Clean();	
+	m_InputLayout->Clean();	
+	m_Vs->Clean();	
+	m_Fs->Clean();	
 }
 
 void GameApp::Update(float dt)
@@ -163,27 +166,21 @@ void GameApp::CompileShaders()
 	CompileShaderData vcsd;
 	vcsd.filepath = "..\\res\\shaders\\src\\simpleVS.hlsl";
 	vcsd.shaderType = E_SHADER_TYPE::E_VERTEX_SHADER;
-	IShader* vs = m_Rendering->CompileShader(vcsd);
+	m_Vs = m_Rendering->CompileShader(vcsd);
 
 	CompileShaderData fcsd;
 	fcsd.filepath = "..\\res\\shaders\\src\\simpleFS.hlsl";
 	fcsd.shaderType = E_SHADER_TYPE::E_FRAGMENT_SHADER;
-	IShader* fs = m_Rendering->CompileShader(fcsd);
-
-	// TODO : save those shaders to class variable 
+	m_Fs = m_Rendering->CompileShader(fcsd); 
 }
 
 void GameApp::CreateVertexLayout()
 {
-	// TODO : not yet implemented
-
-	/*InputLayoutDesc vertexDesc[] =
+	InputLayoutDesc vertexDesc[] =
 	{		
 		{ E_IL_POSITION, 0, 0},
 		{ E_IL_COLOR, 0, 12}
 	};
 	
-	m_Rendering
-	HR(m_Rendering->->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature,
-		passDesc.IAInputSignatureSize, &mInputLayout));*/
+	m_InputLayout = m_Rendering->CreateInputLayout(vertexDesc, 2, m_Vs);
 }

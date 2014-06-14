@@ -27,11 +27,14 @@ namespace bey {
 #endif
 	};
 
-	class IShader {		
+	class IShader {
+	public:
 		virtual void Init(const ShaderInitData& data) = 0;
-		virtual void Clean() = 0;		
+		virtual void Clean() = 0;	
 
-		// TODO : virtual dtor ?
+		//ctor, dtor
+		IShader() {};
+		~IShader() {};
 	};
 
 }
