@@ -34,7 +34,7 @@ namespace bey {
 
 		//ctor, dtor
 		IShader() {};
-		~IShader() {};
+		virtual ~IShader() {};
 	};
 
 }

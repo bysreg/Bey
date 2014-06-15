@@ -1,9 +1,8 @@
 #pragma once
 
-#include <vector>
-
 #include "IInputLayout.h"
 #include "InputLayoutDesc.h"
+#include <vector>
 
 namespace bey {
 

@@ -19,6 +19,10 @@ namespace bey {
 		virtual void Clean() = 0;
 		virtual BeyNativeBuffer* GetNativeBuffer() const = 0;
 		virtual void GetDesc(BufferDesc* bufferDesc) const = 0;
+
+		//ctor, dtor
+		IBuffer() {};
+		virtual ~IBuffer() {};
 	};
 
 }

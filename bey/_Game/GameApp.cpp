@@ -114,11 +114,17 @@ void GameApp::Init(int width, int height, HWND hWnd)
 void GameApp::Clean()
 {
 	m_Rendering->Clean();
-	m_VertexBuffer->Clean();	
+	//delete m_Rendering // TODO : why bad pointer deleteion here ??
+	m_VertexBuffer->Clean();
+	delete m_VertexBuffer;
 	m_IndexBuffer->Clean();	
-	m_InputLayout->Clean();	
-	m_Vs->Clean();	
-	m_Fs->Clean();	
+	delete m_IndexBuffer;
+	m_InputLayout->Clean();
+	delete m_InputLayout;
+	m_Vs->Clean();
+	delete m_Vs;
+	m_Fs->Clean();
+	delete m_Fs;
 }
 
 void GameApp::Update(float dt)

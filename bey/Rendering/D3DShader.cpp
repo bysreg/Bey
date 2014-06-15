@@ -5,7 +5,9 @@
 
 using namespace bey;
 
-D3DShader::D3DShader() : m_Blob(nullptr)
+D3DShader::D3DShader() : 
+m_Blob(nullptr), 
+m_Data(nullptr)
 {
 }
 
@@ -23,7 +25,8 @@ void D3DShader::Clean()
 {
 	if (m_Blob != nullptr) {
 		m_Blob->Release();
-	}		
+	}
+	delete m_Data;
 }
 
 ID3DBlob* D3DShader::GetCompiledShader()

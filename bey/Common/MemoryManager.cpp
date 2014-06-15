@@ -78,7 +78,7 @@ void MemoryManager::Dump()
 
 	for (unsigned int i = 0; i < m_noBuffers; i++)
 	{
-		BEY_LOGF("%4d. 0x%08X: %d bytes(%s: %d)\n", i, (unsigned long)m_dataBuffers[i].pAddress, m_dataBuffers[i].length,
+		BEY_LOGF("%4d. 0x%08X: %d bytes(%s: %d)\n", i + 1, (unsigned long)m_dataBuffers[i].pAddress, m_dataBuffers[i].length,
 			m_dataBuffers[i].fileName, m_dataBuffers[i].line);
 		noTotalBytes += m_dataBuffers[i].length;
 	}

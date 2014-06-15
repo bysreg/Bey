@@ -41,6 +41,8 @@ namespace bey {
 		// create input layout that feeds vertex data to the graphics pipeline
 		virtual IInputLayout* CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc, IShader* compiledShader) = 0;
 
-		// TODO : virtual dtor ?
+		//ctor, dtor
+		IRendering() {};
+		virtual ~IRendering() {};
 	};
 }

@@ -19,6 +19,8 @@ namespace bey {
 		virtual void Init(BeyNativeInputLayout* nativeInputLayout, const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDescNum) = 0;
 		virtual void Clean() = 0;		
 
-		// TODO : virtual dtor ?
+		//ctor, dtor
+		IInputLayout() {};
+		virtual ~IInputLayout() {};
 	};
 }
