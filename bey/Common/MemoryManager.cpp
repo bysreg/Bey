@@ -8,7 +8,11 @@ using namespace bey;
 
 const unsigned long CHECK_CODE = 0X12345678;
 
-MemoryManager MemoryManager::ms_Instance;
+MemoryManager* MemoryManager::GetInstance()
+{
+	static MemoryManager ms_Instance;
+	return &ms_Instance;
+}
 
 MemoryManager::MemoryManager()
 {

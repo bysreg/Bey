@@ -114,7 +114,7 @@ void GameApp::Init(int width, int height, HWND hWnd)
 void GameApp::Clean()
 {
 	m_Rendering->Clean();
-	//delete m_Rendering // TODO : why bad pointer deleteion here ??
+	delete m_Rendering;
 	m_VertexBuffer->Clean();
 	delete m_VertexBuffer;
 	m_IndexBuffer->Clean();	
