@@ -7,8 +7,6 @@
 #include <iostream>
 #include <windows.h>
 
-static bey::GameApp s_App;
-
 // the WindowProc function prototype
 LRESULT CALLBACK WindowProc(HWND hWnd,
 	UINT message,
@@ -59,7 +57,7 @@ void CreateMainWindow(HWND* hWnd, int screenWidth, int screenHeight) {
 	BEY_LOG("Finish Creating Main Window");	
 }
 
-void MainLoop() 
+void MainLoop(bey::GameApp* app) 
 {
 	// this struct holds Windows event messages
 	MSG msg;
@@ -84,11 +82,11 @@ void MainLoop()
 		else
 		{
 			timer.Tick();
-			s_App.CalculateFps(timer.DeltaTime());
+			app->CalculateFps(timer.DeltaTime());
 
 			//simple game loop
-			s_App.Update(timer.DeltaTime());
-			s_App.Render();
+			app->Update(timer.DeltaTime());
+			app->Render();
 		}		
 	}	
 }
@@ -118,14 +116,16 @@ int main() {
 
 	CreateMainWindow(&hWnd, screenWidth, screenHeight);
 
+	bey::GameApp app;
+
 	//initialize app
-	s_App.Init(screenWidth, screenHeight, hWnd);
+	app.Init(screenWidth, screenHeight, hWnd);
 
 	// enter the main loop:
-	MainLoop();
+	MainLoop(&app);
 
 	// clean app
-	s_App.Clean();
+	app.Clean();
 
 	bey::MemoryManager::GetInstance()->Dump();
 	printf("Press any key...\n");
