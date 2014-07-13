@@ -122,18 +122,18 @@ void GameApp::Init(int width, int height, HWND hWnd)
 
 void GameApp::Clean()
 {
-	m_Rendering->Clean();
-	delete m_Rendering;
-	m_VertexBuffer->Clean();
-	delete m_VertexBuffer;
-	m_IndexBuffer->Clean();	
-	delete m_IndexBuffer;
 	m_InputLayout->Clean();
 	delete m_InputLayout;
-	m_Vs->Clean();
-	delete m_Vs;
 	m_Fs->Clean();
 	delete m_Fs;
+	m_Vs->Clean();
+	delete m_Vs;
+	m_IndexBuffer->Clean();
+	delete m_IndexBuffer;
+	m_VertexBuffer->Clean();
+	delete m_VertexBuffer;
+	m_Rendering->Clean();
+	delete m_Rendering;
 }
 
 void GameApp::Update(float dt)

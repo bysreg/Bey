@@ -178,12 +178,20 @@ void D3DRendering::Clean()
 	m_SwapChain->SetFullscreenState(FALSE, NULL);    // switch to windowed mode, or we wont able to clean D3D
 
 	// close and release all existing COM objects
-	m_SwapChain->Release();
-	m_BackBuffer->Release();
-	m_Device->Release();
-	m_DeviceContext->Release();
-	m_DepthStencilBuffer->Release();
-	m_DepthStencilView->Release();
+	ReleaseCOM(m_DepthStencilView);	
+	ReleaseCOM(m_DepthStencilBuffer);
+	ReleaseCOM(m_BackBuffer);
+	ReleaseCOM(m_SwapChain);
+	ReleaseCOM(m_DeviceContext);
+
+#if defined _DEBUG || defined DEBUG
+	ID3D11Debug* d3dDebug = nullptr;
+	m_Device->QueryInterface(__uuidof(ID3D11Debug), (void**) &d3dDebug);	
+	d3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL);
+	ReleaseCOM(d3dDebug);
+#endif
+
+	ReleaseCOM(m_Device); // last D3D COM to be released
 }
 
 void D3DRendering::Clear()
@@ -246,17 +254,21 @@ void D3DRendering::BindBuffer(const IBuffer& buffer)
 
 void D3DRendering::Render(const RenderData& renderData)
 {
-	// TODO : because there are static_cast's in here, make sure all required datas in renderData is not null and proper
+	// TODO : because there are static_casts in here, make sure all required datas in renderData is not null and proper
+
+	ID3D11VertexShader* vso = static_cast<D3DShader*>(renderData.vs)->GetVertexShaderObject();
+	ID3D11PixelShader* fso = static_cast<D3DShader*>(renderData.fs)->GetFragmentShaderObject();
+	ID3D11InputLayout* nativeInputlayout = static_cast<D3DInputLayout*>(renderData.inputLayout)->GetNativeInputLayout();
 
 	//set vertex buffer
 	BindBuffer(*(renderData.vertexBuffer));
 
 	//set shaders
-	m_DeviceContext->VSSetShader(static_cast<D3DShader*>(renderData.vs)->GetVertexShaderObject(), nullptr, 0);
-	m_DeviceContext->PSSetShader(static_cast<D3DShader*>(renderData.fs)->GetFragmentShaderObject(), nullptr, 0);
+	m_DeviceContext->VSSetShader(vso, nullptr, 0);
+	m_DeviceContext->PSSetShader(fso, nullptr, 0);
 
 	//set input layout
-	m_DeviceContext->IASetInputLayout(static_cast<D3DInputLayout*>(renderData.inputLayout)->GetNativeInputLayout());
+	m_DeviceContext->IASetInputLayout(nativeInputlayout);
 
 	//set primitive topology
 	switch (renderData.primitiveTopology) {
