@@ -18,7 +18,7 @@ void D3DBuffer::Clean()
 
 BeyNativeBuffer* D3DBuffer::GetNativeBuffer() const
 {
-	return nullptr;
+	return m_NativeBuffer;
 }
 
 void D3DBuffer::GetDesc(BufferDesc* bufferDesc) const

@@ -11,6 +11,8 @@ namespace bey {
 		virtual void Clean();
 
 		ID3DBlob* GetCompiledShader();
+		ID3D11VertexShader* GetVertexShaderObject();
+		ID3D11PixelShader* GetFragmentShaderObject();
 
 		D3DShader();
 		~D3DShader();		
@@ -18,5 +20,7 @@ namespace bey {
 	private:			
 		ShaderInitData* m_Data;
 		ID3DBlob* m_Blob;
+		ID3D11PixelShader* m_FragmenShaderObject;
+		ID3D11VertexShader* m_VertexShaderObject;
 	};
 }

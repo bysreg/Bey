@@ -18,6 +18,7 @@ v2f VS(a2v input)
 	
 	//transform to homogenous clip space
 	output.posH = mul( float4(input.posL, 1.0) , wvp );
+	output.color = input.color;
 	
 	return output;
 }

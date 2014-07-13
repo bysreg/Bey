@@ -2,6 +2,7 @@
 
 #include "Framework\App.h"
 #include "windows.h"
+#include "Rendering\RenderData.h"
 
 namespace bey {
 	//forward declarations
@@ -36,6 +37,7 @@ namespace bey {
 		IInputLayout* m_InputLayout;
 		IShader* m_Vs;
 		IShader* m_Fs;
+		RenderData m_RenderData;
 
 		void CompileShaders();
 		void CreateVertexLayout();

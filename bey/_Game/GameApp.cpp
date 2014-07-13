@@ -20,7 +20,8 @@ m_Height(0),
 m_Hwnd(),
 m_Rendering(nullptr), 
 m_VertexBuffer(nullptr), 
-m_IndexBuffer(nullptr)
+m_IndexBuffer(nullptr), 
+m_RenderData()
 {
 	m_Rendering = new D3DRendering;
 }
@@ -100,7 +101,7 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	//index buffer desc
 	BufferDesc ibd;
 	ibd.usage = E_BU_IMMUTABLE;
-	ibd.totalByteSize = sizeof(BeyUint)* 36;
+	ibd.totalByteSize = sizeof(indices);
 	ibd.elementByteSize = sizeof(BeyUint);
 	ibd.type = E_BT_INDEX_BUFFER;
 	ibd.data = indices;
@@ -109,6 +110,14 @@ void GameApp::Init(int width, int height, HWND hWnd)
 
 	CompileShaders();
 	CreateVertexLayout();
+
+	m_RenderData.renderType = E_RENDER_TYPE::E_USE_INDEX_BUFFER;
+	m_RenderData.vertexBuffer = m_VertexBuffer;
+	m_RenderData.vs = m_Vs;
+	m_RenderData.fs = m_Fs;
+	m_RenderData.inputLayout = m_InputLayout;
+	m_RenderData.indexBuffer = m_IndexBuffer;
+	m_RenderData.indexCount = sizeof(indices) / sizeof(BeyUint);
 }
 
 void GameApp::Clean()
@@ -134,8 +143,8 @@ void GameApp::Update(float dt)
 void GameApp::Render()
 {
 	m_Rendering->Clear();	
-
 	m_Rendering->SwapBuffer();
+	m_Rendering->Render(m_RenderData);
 }
 
 void GameApp::CalculateFps(float dt)

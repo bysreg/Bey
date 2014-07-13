@@ -246,10 +246,31 @@ void D3DRendering::BindBuffer(const IBuffer& buffer)
 
 void D3DRendering::Render(const RenderData& renderData)
 {
-	switch (renderData.renderType) {
+	// TODO : because there are static_cast's in here, make sure all required datas in renderData is not null and proper
+
+	//set vertex buffer
+	BindBuffer(*(renderData.vertexBuffer));
+
+	//set shaders
+	m_DeviceContext->VSSetShader(static_cast<D3DShader*>(renderData.vs)->GetVertexShaderObject(), nullptr, 0);
+	m_DeviceContext->PSSetShader(static_cast<D3DShader*>(renderData.fs)->GetFragmentShaderObject(), nullptr, 0);
+
+	//set input layout
+	m_DeviceContext->IASetInputLayout(static_cast<D3DInputLayout*>(renderData.inputLayout)->GetNativeInputLayout());
+
+	//set primitive topology
+	switch (renderData.primitiveTopology) {
+	case E_TRIANGLE_LIST:
+	default:
+		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		break;
+	}
+
+	switch (renderData.renderType) {		
 	case E_USE_INDEX_BUFFER:
 	default:
 		// TODO : temporarily default to use index buffer. should be to vertex buffer only though
+		BindBuffer(*(renderData.indexBuffer)); // set index buffer
 		m_DeviceContext->DrawIndexed(renderData.indexCount, 0, 0);
 		break;
 	}
@@ -312,7 +333,7 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 		return nullptr; // never reach this
 	}
 
-	//create shader object out of the native shader
+	//create shader object out of the native compiled shader (because of course you can compile the shaders not in runtime)
 	return CreateShader(shaderBlob, compileShaderData.shaderType);
 }
 
@@ -336,7 +357,7 @@ IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc* inputLayout
 	LPVOID nativeCompiledShaderPointer = d3dCompiledShader->GetCompiledShader()->GetBufferPointer();
 	SIZE_T nativeCompiledShaderSize = d3dCompiledShader->GetCompiledShader()->GetBufferSize();
 
-	HR(m_Device->CreateInputLayout(d3dDescs, numInputLayoutDesc, nativeCompiledShaderPointer, nativeCompiledShaderSize, &nativeInputLayout)); // TODO : which one to use as the input for the pointer to the compiled shader ? the ID3DBlob* or using ID3DBlob::GetBufferPointer ?
+	HR(m_Device->CreateInputLayout(d3dDescs, numInputLayoutDesc, nativeCompiledShaderPointer, nativeCompiledShaderSize, &nativeInputLayout)); // TODO : use compiledshader or the shader object ?
 
 	inputLayout->Init(nativeInputLayout, inputLayoutDesc, numInputLayoutDesc);
 
@@ -356,6 +377,25 @@ D3DShader* D3DRendering::CreateShader(ID3DBlob* shaderProgram, E_SHADER_TYPE sha
 	ShaderInitData sid;
 	sid.shaderType = shaderType;
 	sid.nativeProgram = shaderProgram;
+
+	//create the vertex/fragment shader object from the compiled shader	
+	switch (shaderType) {
+	case E_FRAGMENT_SHADER:
+		{
+			ID3D11PixelShader* pixelShaderObject = nullptr;
+			HR(m_Device->CreatePixelShader(shaderProgram->GetBufferPointer(), shaderProgram->GetBufferSize(), nullptr, &pixelShaderObject));
+			sid.fragmentShaderObject = pixelShaderObject;
+		}		
+		break;
+	case E_VERTEX_SHADER:
+	default:
+		{
+			ID3D11VertexShader* vertexShaderObject = nullptr;
+			HR(m_Device->CreateVertexShader(shaderProgram->GetBufferPointer(), shaderProgram->GetBufferSize(), nullptr, &vertexShaderObject));
+			sid.vertexShaderObject = vertexShaderObject;
+		}		
+		break;		
+	}	
 
 	shader->Init(sid);
 

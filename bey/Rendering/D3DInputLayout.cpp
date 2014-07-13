@@ -46,6 +46,11 @@ DXGI_FORMAT D3DInputLayout::GetSuitableFormatFromType(E_INPUT_LAYOUT_TYPE type)
 	return DXGI_FORMAT_R32G32B32_FLOAT; // error, arbitrary return value
 }
 
+BeyNativeInputLayout* D3DInputLayout::GetNativeInputLayout()
+{
+	return m_NativeInputLayout;
+}
+
 D3DInputLayout::D3DInputLayout() :
 m_NativeInputLayout(nullptr)
 {
