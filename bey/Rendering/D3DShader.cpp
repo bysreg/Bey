@@ -33,12 +33,19 @@ void D3DShader::Init(const ShaderInitData& data)
 
 void D3DShader::Clean()
 {
+	switch (m_Data->shaderType) {
+		case E_VERTEX_SHADER:
+			m_VertexShaderObject->Release();
+			break;
+		case E_FRAGMENT_SHADER:
+			m_FragmenShaderObject->Release();
+			break;
+	}
+	
 	if (m_Blob != nullptr) {
 		m_Blob->Release();
 	}
-	delete m_Data;
-	m_VertexShaderObject->Release();
-	m_FragmenShaderObject->Release();
+	delete m_Data;	
 }
 
 ID3DBlob* D3DShader::GetCompiledShader()
