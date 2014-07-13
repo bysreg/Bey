@@ -20,6 +20,8 @@ D3D11_BIND_FLAG BufferDesc::ConvertEBufferType(E_BUFFER_TYPE type) {
 		return D3D11_BIND_VERTEX_BUFFER;
 	case E_BT_INDEX_BUFFER:
 		return D3D11_BIND_INDEX_BUFFER;
+	case E_BT_CONSTANT_BUFFER:
+		return D3D11_BIND_CONSTANT_BUFFER;
 	}
 
 	assert(false); // force quit

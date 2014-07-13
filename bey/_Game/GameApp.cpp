@@ -21,6 +21,7 @@ m_Hwnd(),
 m_Rendering(nullptr), 
 m_VertexBuffer(nullptr), 
 m_IndexBuffer(nullptr), 
+m_ConstantBuffer(nullptr),
 m_RenderData()
 {
 	m_Rendering = new D3DRendering;
@@ -107,6 +108,9 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	ibd.data = indices;
 	
 	m_IndexBuffer = m_Rendering->CreateBuffer(&ibd);		
+
+	//create constant buffer
+	// CreateConstantBuffer(); // TODO : implement this functionality
 
 	CompileShaders();
 	CreateVertexLayout();
@@ -198,4 +202,18 @@ void GameApp::CreateVertexLayout()
 	};
 	
 	m_InputLayout = m_Rendering->CreateInputLayout(vertexDesc, 2, m_Vs);
+}
+
+void GameApp::CreateConstantBuffer()
+{
+	// TODO : not complete
+	// constant buffer desc
+	BufferDesc cbd;
+	cbd.usage = E_BU_IMMUTABLE;
+	cbd.totalByteSize = sizeof(VertexColor) * 8;
+	cbd.elementByteSize = sizeof(VertexColor);
+	cbd.type = E_BT_CONSTANT_BUFFER;
+	cbd.data = nullptr;
+
+	m_VertexBuffer = m_Rendering->CreateBuffer(&cbd);
 }

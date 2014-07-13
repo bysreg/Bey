@@ -5,13 +5,15 @@
 
 namespace bey {
 
+	// BU stands for buffer usage
 	enum E_BUFFER_USAGE {
-		E_BU_IMMUTABLE = 0, // BU stands for buffer usage
+		E_BU_IMMUTABLE = 0, // equivalent to direct 3d D3D11_USAGE_IMMUTABLE. GPU can only read. CPU cannot read nor write		
 	};
 
 	enum E_BUFFER_TYPE {
 		E_BT_VERTEX_BUFFER = 0, // BT stands for buffer type
-		E_BT_INDEX_BUFFER, 
+		E_BT_INDEX_BUFFER,
+		E_BT_CONSTANT_BUFFER
 	};
 
 	//simple data-only variables

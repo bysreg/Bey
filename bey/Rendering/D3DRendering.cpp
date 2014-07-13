@@ -212,7 +212,7 @@ IBuffer* D3DRendering::CreateBuffer(const BufferDesc* bufferDesc)
 	bd.Usage = BufferDesc::ConvertEBufferUsage(bufferDesc->usage);
 	bd.ByteWidth = bufferDesc->totalByteSize;
 	bd.BindFlags = BufferDesc::ConvertEBufferType(bufferDesc->type);
-	bd.CPUAccessFlags = 0; // for now, CPU does not need to read or write to buffer
+	bd.CPUAccessFlags = 0; // for now, CPU does not need to read or write to buffer // TODO : must change this if we support other than E_BU_IMMUTABLE
 	bd.MiscFlags = 0; // no misc flags for now
 	bd.StructureByteStride = 0; // always 0 for now
 

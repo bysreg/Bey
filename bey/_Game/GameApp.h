@@ -34,6 +34,7 @@ namespace bey {
 		//cube
 		IBuffer* m_IndexBuffer;
 		IBuffer* m_VertexBuffer;
+		IBuffer* m_ConstantBuffer;
 		IInputLayout* m_InputLayout;
 		IShader* m_Vs;
 		IShader* m_Fs;
@@ -41,5 +42,6 @@ namespace bey {
 
 		void CompileShaders();
 		void CreateVertexLayout();
+		void CreateConstantBuffer();
 	};
 }

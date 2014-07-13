@@ -1,4 +1,7 @@
-uniform float4x4 wvp;
+cbuffer cbPerObject
+{
+	uniform float4x4 wvp;
+};
 
 struct a2v
 {
