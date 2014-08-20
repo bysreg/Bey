@@ -20,8 +20,7 @@ v2f VS(a2v input)
 	v2f output;
 	
 	//transform to homogenous clip space
-	output.posH = float4(input.posL, 1.0);
-	//output.posH = mul( float4(input.posL, 1.0) , wvp );
+	output.posH = mul( float4(input.posL, 1.0) , wvp );
 	output.color = input.color;
 	
 	return output;
