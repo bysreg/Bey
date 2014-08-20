@@ -12,7 +12,7 @@ typedef DirectX::XMFLOAT3 BeyFloat3;
 typedef DirectX::XMFLOAT4 BeyFloat4;
 typedef char BeyChar;
 
-#elif
+#else
 
 //TODO : need data types to substitute BeyFloat3
 //TODO : need data types to substitute BeyFloat4

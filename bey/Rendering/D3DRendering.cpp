@@ -14,6 +14,7 @@
 #include <d3dcompiler.h>
 #include <assert.h>
 #include <cstdio>
+#include <comdef.h>
 
 using namespace bey;
 
@@ -198,7 +199,7 @@ void D3DRendering::Clear()
 {
 	// clear the back buffer to a deep blue
 	float color[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
-	m_DeviceContext->ClearRenderTargetView(m_BackBuffer, color);	
+	m_DeviceContext->ClearRenderTargetView(m_BackBuffer, color);
 }
 
 void D3DRendering::SwapBuffer()
@@ -280,10 +281,13 @@ void D3DRendering::Render(const RenderData& renderData)
 
 	switch (renderData.renderType) {		
 	case E_USE_INDEX_BUFFER:
-	default:
-		// TODO : temporarily default to use index buffer. should be to vertex buffer only though
 		BindBuffer(*(renderData.indexBuffer)); // set index buffer
 		m_DeviceContext->DrawIndexed(renderData.indexCount, 0, 0);
+		break;
+
+	case E_USE_VERTEX_BUFFER_ONLY:
+	default:
+		m_DeviceContext->Draw(renderData.vertexCount, 0);
 		break;
 	}
 }
@@ -339,8 +343,12 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 			errorMessage = (char*)errorBlob->GetBufferPointer();
 		if (errorMessage != nullptr)
 			BEY_LOGF("compile error on %s => %s\n", compileShaderData.filepath, errorMessage);
-		else
-			BEY_LOGF("compile error on %s\n", compileShaderData.filepath);
+		else 
+		{			
+			BEY_LOGF("compile error on %s => ", compileShaderData.filepath);
+			BEY_LOGW(_com_error(hr).ErrorMessage());
+		}
+			
 		assert(false); // force quit, the message may show up on console output or log
 		return nullptr; // never reach this
 	}
@@ -369,7 +377,7 @@ IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc* inputLayout
 	LPVOID nativeCompiledShaderPointer = d3dCompiledShader->GetCompiledShader()->GetBufferPointer();
 	SIZE_T nativeCompiledShaderSize = d3dCompiledShader->GetCompiledShader()->GetBufferSize();
 
-	HR(m_Device->CreateInputLayout(d3dDescs, numInputLayoutDesc, nativeCompiledShaderPointer, nativeCompiledShaderSize, &nativeInputLayout)); // TODO : use compiledshader or the shader object ?
+	HR(m_Device->CreateInputLayout(d3dDescs, numInputLayoutDesc, nativeCompiledShaderPointer, nativeCompiledShaderSize, &nativeInputLayout));
 
 	inputLayout->Init(nativeInputLayout, inputLayoutDesc, numInputLayoutDesc);
 
@@ -395,7 +403,7 @@ D3DShader* D3DRendering::CreateShader(ID3DBlob* shaderProgram, E_SHADER_TYPE sha
 	case E_FRAGMENT_SHADER:
 		{
 			ID3D11PixelShader* pixelShaderObject = nullptr;
-			HR(m_Device->CreatePixelShader(shaderProgram->GetBufferPointer(), shaderProgram->GetBufferSize(), nullptr, &pixelShaderObject));
+			HR(m_Device->CreatePixelShader(sid.nativeProgram->GetBufferPointer(), sid.nativeProgram->GetBufferSize(), nullptr, &pixelShaderObject));
 			sid.fragmentShaderObject = pixelShaderObject;
 		}		
 		break;
@@ -403,7 +411,7 @@ D3DShader* D3DRendering::CreateShader(ID3DBlob* shaderProgram, E_SHADER_TYPE sha
 	default:
 		{
 			ID3D11VertexShader* vertexShaderObject = nullptr;
-			HR(m_Device->CreateVertexShader(shaderProgram->GetBufferPointer(), shaderProgram->GetBufferSize(), nullptr, &vertexShaderObject));
+			HR(m_Device->CreateVertexShader(sid.nativeProgram->GetBufferPointer(), sid.nativeProgram->GetBufferSize(), nullptr, &vertexShaderObject));
 			sid.vertexShaderObject = vertexShaderObject;
 		}		
 		break;		

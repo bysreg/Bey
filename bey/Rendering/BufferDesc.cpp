@@ -12,6 +12,7 @@ D3D11_USAGE BufferDesc::ConvertEBufferUsage(E_BUFFER_USAGE usage) {
 	}
 
 	assert(false); // force quit
+	return D3D11_USAGE_IMMUTABLE;
 }
 
 D3D11_BIND_FLAG BufferDesc::ConvertEBufferType(E_BUFFER_TYPE type) {

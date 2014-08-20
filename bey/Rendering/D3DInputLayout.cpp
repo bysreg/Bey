@@ -5,7 +5,7 @@ using namespace bey;
 
 void D3DInputLayout::Init(BeyNativeInputLayout* nativeInputLayout, const InputLayoutDesc* inputLayoutDescs, int descNumElements)
 {
-	// TODO : checks whether there m_nativeInputLayout is not null. to make sure we dont have a second initialization.
+	// TODO : checks whether the m_nativeInputLayout is not null. to make sure we dont have a second initialization.
 	m_NativeInputLayout = nativeInputLayout;
 
 	//create our own copy of inputlayoutdescs

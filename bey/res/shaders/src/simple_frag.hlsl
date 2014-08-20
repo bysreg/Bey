@@ -3,7 +3,7 @@ struct FragmentShaderInput
 	float4 pos : SV_POSITION;
 };
 
-float4 SimpleFragmentShader(FragmentShaderInput input) : SV_TARGET
+float4 FS(FragmentShaderInput input) : SV_TARGET
 {
 	// Draw the entire triangle yellow.
 	return float4(1.0f, 1.0f, 0.0f, 1.0f);

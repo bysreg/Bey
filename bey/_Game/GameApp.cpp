@@ -65,7 +65,7 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	// vertex buffer desc
 	BufferDesc vbd; 
 	vbd.usage = E_BU_IMMUTABLE;
-	vbd.totalByteSize = sizeof(VertexColor)* 8;
+	vbd.totalByteSize = sizeof(vertices);
 	vbd.elementByteSize = sizeof(VertexColor);
 	vbd.type = E_BT_VERTEX_BUFFER;
 	vbd.data = vertices;
@@ -117,6 +117,7 @@ void GameApp::Init(int width, int height, HWND hWnd)
 
 	m_RenderData.renderType = E_RENDER_TYPE::E_USE_INDEX_BUFFER;
 	m_RenderData.vertexBuffer = m_VertexBuffer;
+	m_RenderData.vertexCount = sizeof(vertices) / sizeof(VertexColor);
 	m_RenderData.vs = m_Vs;
 	m_RenderData.fs = m_Fs;
 	m_RenderData.inputLayout = m_InputLayout;
@@ -207,13 +208,14 @@ void GameApp::CreateVertexLayout()
 void GameApp::CreateConstantBuffer()
 {
 	// TODO : not complete
+
 	// constant buffer desc
 	BufferDesc cbd;
 	cbd.usage = E_BU_IMMUTABLE;
-	cbd.totalByteSize = sizeof(VertexColor) * 8;
-	cbd.elementByteSize = sizeof(VertexColor);
+	cbd.totalByteSize = sizeof(VertexColor) * 8; // fixme : do not hardcode the size. hard coded in source code. Ideally, we should get the value from looking or doing reflection on the shader raw text code
+	cbd.elementByteSize = sizeof(VertexColor); // hard coded in source code. Ideally, we should get the value from looking or doing reflection on the shader raw text code
 	cbd.type = E_BT_CONSTANT_BUFFER;
 	cbd.data = nullptr;
 
-	m_VertexBuffer = m_Rendering->CreateBuffer(&cbd);
+	m_ConstantBuffer = m_Rendering->CreateBuffer(&cbd);
 }

@@ -5,7 +5,7 @@
 #ifdef DIRECT3D
 typedef ID3D11InputLayout BeyNativeInputLayout;
 #else
-// TODO
+// TODO : open gl here
 #endif
 
 namespace bey {

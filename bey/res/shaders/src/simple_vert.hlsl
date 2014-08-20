@@ -8,7 +8,7 @@ struct PixelShaderInput
 	float4 pos : SV_POSITION;
 };
 
-PixelShaderInput SimpleVertexShader(VertexShaderInput input)
+PixelShaderInput VS(VertexShaderInput input)
 {
 	PixelShaderInput vertexShaderOutput;
 

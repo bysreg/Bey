@@ -17,8 +17,11 @@ namespace bey {
 // the do-while code ensure that this is a full statement so that it could be safely used in if else without curly braces.
 // more info here : http://stackoverflow.com/questions/1644868/c-define-macro-for-debug-printing/1644898#1644898
 #define BEY_LOG(message)\
-	do { if (BEY_LOG_TEST) std::cerr << message << " (log invoked from : " << __FILE__ << ":" << __LINE__ <<  ")" << std::endl; } while (0)
+	do { if (BEY_LOG_TEST) std::cout << message << " (log invoked from : " << __FILE__ << ":" << __LINE__ <<  ")" << std::endl; } while (0)
 
 #define BEY_LOGF(format, ...)\
 	do { if (BEY_LOG_TEST) bey::Log(__FILE__, __LINE__, format, __VA_ARGS__); } while (0)
 
+//in wide char
+#define BEY_LOGW(message)\
+	do { if (BEY_LOG_TEST) std::wcout << message << " (log invoked from : " << __FILE__ << ":" << __LINE__ << ")" << std::endl; } while (0)
