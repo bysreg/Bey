@@ -44,6 +44,8 @@ namespace bey {
 		ID3D11Device* m_Device;
 		ID3D11DeviceContext* m_DeviceContext;		
 		ID3D11RenderTargetView* m_BackBuffer;
+		ID3D11Texture2D* m_DepthStencilBuffer;
+		ID3D11DepthStencilView* m_DepthStencilView;		
 
 		D3DRendering(D3DRendering const&); // don't implement
 		void operator=(D3DRendering const&); // don't implement
