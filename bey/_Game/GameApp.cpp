@@ -15,12 +15,12 @@
 using namespace bey;
 
 GameApp::GameApp() :
-m_Width(0), 
+m_Width(0),
 m_Height(0),
 m_Hwnd(),
-m_Rendering(nullptr), 
-m_VertexBuffer(nullptr), 
-m_IndexBuffer(nullptr), 
+m_Rendering(nullptr),
+m_VertexBuffer(nullptr),
+m_IndexBuffer(nullptr),
 m_ConstantBuffer(nullptr),
 m_RenderData()
 {
@@ -49,55 +49,30 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	Init();
 
 	//colors
-	const RGBA_NORM GREEN = {0.0f, 1.0f, 0.0f, 1.0f};	
+	const RGBA_NORM GREEN = { 0.0f, 1.0f, 0.0f, 1.0f };
+	const RGBA_NORM BLUE = { 0.0f, 0.0f, 1.0f, 1.0f };
+	const RGBA_NORM RED = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	VertexColor vertices[] = {
-		{ BeyFloat3(-1.0f, -1.0f, -1.0f), GREEN },
-		{ BeyFloat3(-1.0f, 1.0f, -1.0f), GREEN },
-		{ BeyFloat3(1.0f, 1.0f, -1.0f), GREEN },
-		{ BeyFloat3(1.0f, -1.0f, -1.0f), GREEN },
-		{ BeyFloat3(-1.0f, -1.0f, 1.0f), GREEN },
-		{ BeyFloat3(-1.0f, 1.0f, 1.0f), GREEN },
-		{ BeyFloat3(1.0f, 1.0f, 1.0f), GREEN },
-		{ BeyFloat3(1.0f, -1.0f, 1.0f), GREEN },
-	};	
+		{ BeyFloat3(0.0f, 1.0f, 0.5f), GREEN },
+		{ BeyFloat3(1.0f, -1.0f, 0.5f), BLUE },
+		{ BeyFloat3(-1.0f, -1.0f, 0.5f), RED },
+	};
 
 	// vertex buffer desc
-	BufferDesc vbd; 
+	BufferDesc vbd;
 	vbd.usage = E_BU_IMMUTABLE;
 	vbd.totalByteSize = sizeof(vertices);
 	vbd.elementByteSize = sizeof(VertexColor);
 	vbd.type = E_BT_VERTEX_BUFFER;
 	vbd.data = vertices;
-	
+
 	m_VertexBuffer = m_Rendering->CreateBuffer(&vbd);
-	
+
 	// Create the index buffer
 	BeyUint indices[] = {
-		// front face
-		0, 1, 2,
-		0, 2, 3,
-
-		// back face
-		4, 6, 5,
-		4, 7, 6,
-
-		// left face
-		4, 5, 1,
-		4, 1, 0,
-
-		// right face
-		3, 2, 6,
-		3, 6, 7,
-
-		// top face
-		1, 5, 6,
-		1, 6, 2,
-
-		// bottom face
-		4, 0, 3,
-		4, 3, 7
-	};	
+		0, 1, 2
+	};
 
 	//index buffer desc
 	BufferDesc ibd;
@@ -106,11 +81,8 @@ void GameApp::Init(int width, int height, HWND hWnd)
 	ibd.elementByteSize = sizeof(BeyUint);
 	ibd.type = E_BT_INDEX_BUFFER;
 	ibd.data = indices;
-	
-	m_IndexBuffer = m_Rendering->CreateBuffer(&ibd);		
 
-	//create constant buffer
-	// CreateConstantBuffer(); // TODO : implement this functionality
+	m_IndexBuffer = m_Rendering->CreateBuffer(&ibd);
 
 	CompileShaders();
 	CreateVertexLayout();
@@ -148,8 +120,8 @@ void GameApp::Update(float dt)
 void GameApp::Render()
 {
 	m_Rendering->Clear();	
-	m_Rendering->SwapBuffer();
 	m_Rendering->Render(m_RenderData);
+	m_Rendering->SwapBuffer();
 }
 
 void GameApp::CalculateFps(float dt)
@@ -178,44 +150,29 @@ void GameApp::CalculateFps(float dt)
 		// Reset for next average.
 		frameCount = 0;
 		timeElapsed -= 1.0f;
-	}	
+	}
 }
 
 void GameApp::CompileShaders()
 {
 	CompileShaderData vcsd;
-	vcsd.filepath = "..\\res\\shaders\\src\\simpleVS.hlsl";
+	vcsd.filepath = "..\\res\\shaders\\src\\simple_vert.hlsl";
 	vcsd.shaderType = E_SHADER_TYPE::E_VERTEX_SHADER;
 	m_Vs = m_Rendering->CompileShader(vcsd);
 
 	CompileShaderData fcsd;
-	fcsd.filepath = "..\\res\\shaders\\src\\simpleFS.hlsl";
+	fcsd.filepath = "..\\res\\shaders\\src\\simple_frag.hlsl";
 	fcsd.shaderType = E_SHADER_TYPE::E_FRAGMENT_SHADER;
-	m_Fs = m_Rendering->CompileShader(fcsd); 
+	m_Fs = m_Rendering->CompileShader(fcsd);
 }
 
 void GameApp::CreateVertexLayout()
 {
 	InputLayoutDesc vertexDesc[] =
-	{		
-		{ E_IL_POSITION, 0, 0},
-		{ E_IL_COLOR, 0, 12}
+	{
+		{ E_IL_POSITION, 0, 0 },
+		{ E_IL_COLOR, 0, 12 }
 	};
-	
+
 	m_InputLayout = m_Rendering->CreateInputLayout(vertexDesc, 2, m_Vs);
-}
-
-void GameApp::CreateConstantBuffer()
-{
-	// TODO : not complete
-
-	// constant buffer desc
-	BufferDesc cbd;
-	cbd.usage = E_BU_IMMUTABLE;
-	cbd.totalByteSize = sizeof(VertexColor) * 8; // fixme : do not hardcode the size. hard coded in source code. Ideally, we should get the value from looking or doing reflection on the shader raw text code
-	cbd.elementByteSize = sizeof(VertexColor); // hard coded in source code. Ideally, we should get the value from looking or doing reflection on the shader raw text code
-	cbd.type = E_BT_CONSTANT_BUFFER;
-	cbd.data = nullptr;
-
-	m_ConstantBuffer = m_Rendering->CreateBuffer(&cbd);
 }
