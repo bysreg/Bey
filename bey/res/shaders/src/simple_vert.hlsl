@@ -1,19 +1,15 @@
-struct VertexShaderInput
+struct VOut
 {
-	float2 pos : POSITION;
+    float4 position : SV_POSITION;
+    float4 color : COLOR;
 };
 
-struct PixelShaderInput
+VOut VS(float4 position : POSITION, float4 color : COLOR)
 {
-	float4 pos : SV_POSITION;
-};
+    VOut output;
 
-PixelShaderInput VS(VertexShaderInput input)
-{
-	PixelShaderInput vertexShaderOutput;
+    output.position = position;
+    output.color = color;
 
-	// For this lesson, set the vertex depth value to 0.5 so it is guaranteed to be drawn.
-	vertexShaderOutput.pos = float4(input.pos, 0.5f, 1.0f);
-
-	return vertexShaderOutput;
+    return output;
 }
