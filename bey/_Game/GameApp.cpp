@@ -1,7 +1,6 @@
 #include "GameApp.h"
 #include "Rendering\D3DRendering.h"
-#include "Rendering\D3DInputLayout.h"
-#include "Rendering\D3DUtil.h"
+#include "Rendering\IInputLayout.h"
 #include "Rendering\RenderingInitData.h"
 #include "Rendering\Vertex.h"
 #include "Rendering\BufferDesc.h"
@@ -21,7 +20,6 @@ m_Hwnd(),
 m_Rendering(nullptr),
 m_VertexBuffer(nullptr),
 m_IndexBuffer(nullptr),
-m_ConstantBuffer(nullptr),
 m_RenderData()
 {
 	m_Rendering = new D3DRendering;
