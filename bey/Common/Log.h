@@ -6,7 +6,7 @@ namespace bey {
 	void Log(const char* filename, int line, const char* format, ...);
 }
 
-#ifdef ENABLE_BEY_LOG
+#ifdef BEY_ENABLE_LOG
 #define BEY_LOG_TEST 1
 #else
 #define BEY_LOG_TEST 0

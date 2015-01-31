@@ -51,7 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BEY_USE_DIRECT3D;BEY_OS_WIN32;_UNICODE;UNICODE;ENABLE_BEY_LOG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BEY_USE_DIRECT3D;BEY_OS_WIN32;_UNICODE;UNICODE;BEY_ENABLE_LOG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>Common\MemoryOperator.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
