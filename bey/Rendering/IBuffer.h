@@ -4,7 +4,7 @@
 #include <d3d11.h>
 typedef ID3D11Buffer BeyNativeBuffer;
 #elif BEY_USE_OPENGL
-#include <gl\GL.h>
+#include <glew.h>
 typedef GLuint BeyNativeBuffer;
 #endif
 

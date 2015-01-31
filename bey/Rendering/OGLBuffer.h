@@ -3,8 +3,6 @@
 #include "IBuffer.h"
 #include "BufferDesc.h"
 
-#include <gl\GL.h>
-
 namespace bey
 {
 	class OGLBuffer : public IBuffer
@@ -18,7 +16,7 @@ namespace bey
 
 		OGLBuffer();
 	private:
-		GLuint m_NativeBuffer;
+		GLuint* m_NativeBuffer;
 		BufferDesc m_BufferDesc;
 	};
 }

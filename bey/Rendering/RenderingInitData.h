@@ -1,6 +1,8 @@
 #pragma once
 
+#ifdef BEY_OS_WIN32
 #include <windows.h>
+#endif
 
 namespace bey {
 

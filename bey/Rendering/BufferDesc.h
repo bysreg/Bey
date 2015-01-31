@@ -4,6 +4,8 @@
 
 #ifdef BEY_USE_DIRECT3D
 #include <d3d11.h>
+#elif BEY_USE_OPENGL
+#include <glew.h>
 #endif
 
 namespace bey {
@@ -32,8 +34,10 @@ namespace bey {
 		//convert types to D3D11 corresponding types
 		static D3D11_USAGE ConvertEBufferUsage(E_BUFFER_USAGE usage);
 		static D3D11_BIND_FLAG ConvertEBufferType(E_BUFFER_TYPE type);
-#else
-//TODO : open gl here
+#elif BEY_USE_OPENGL
+		//convert types to OpenGL corresponding types
+		static GLenum ConvertEBufferUsage(E_BUFFER_USAGE usage);
+		static GLenum ConvertEBufferType(E_BUFFER_TYPE type);
 #endif
 	};
 }

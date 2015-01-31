@@ -12,7 +12,7 @@ void OGLBuffer::Init(BeyNativeBuffer* nativeBuffer, const BufferDesc& bufferDesc
 void OGLBuffer::Clean()
 {
 	if (m_NativeBuffer)
-		m_NativeBuffer->Release();
+		delete m_NativeBuffer;
 }
 
 BeyNativeBuffer* OGLBuffer::GetNativeBuffer() const

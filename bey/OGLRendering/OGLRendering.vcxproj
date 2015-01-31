@@ -53,7 +53,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>BEY_USE_OPENGL;BEY_OS_WIN32;_UNICODE;UNICODE;BEY_ENABLE_LOG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)/includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -87,6 +87,7 @@
     <ClInclude Include="..\Rendering\InputLayoutDesc.h" />
     <ClInclude Include="..\Rendering\IRendering.h" />
     <ClInclude Include="..\Rendering\IShader.h" />
+    <ClInclude Include="..\Rendering\OGLBuffer.h" />
     <ClInclude Include="..\Rendering\RenderData.h" />
     <ClInclude Include="..\Rendering\RenderingInitData.h" />
     <ClInclude Include="..\Rendering\Vertex.h" />
@@ -94,6 +95,7 @@
   <ItemGroup>
     <ClCompile Include="..\Rendering\BufferDesc.cpp" />
     <ClCompile Include="..\Rendering\Camera.cpp" />
+    <ClCompile Include="..\Rendering\OGLBuffer.cpp" />
     <ClCompile Include="..\Rendering\OGLRendering.cpp" />
     <ClCompile Include="..\Rendering\ShaderInitData.cpp" />
   </ItemGroup>
