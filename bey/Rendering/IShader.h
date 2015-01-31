@@ -3,7 +3,7 @@
 #include "Common\DataTypeDefs.h"
 
 //forward declarations
-#ifdef DIRECT3D
+#ifdef BEY_USE_DIRECT3D
 struct ID3D10Blob;
 typedef ID3D10Blob ID3DBlob;
 struct ID3D11VertexShader;
@@ -24,7 +24,7 @@ namespace bey {
 
 	struct ShaderInitData {		
 		E_SHADER_TYPE shaderType;
-#ifdef DIRECT3D
+#ifdef BEY_USE_DIRECT3D
 		ID3DBlob* nativeProgram; // contains ID3DBlob from compiling shader, after that it is used to create vertex/fragment shader object
 		ID3D11VertexShader* vertexShaderObject; // only used if shaderType is E_VERTEX_SHADER
 		ID3D11PixelShader* fragmentShaderObject; // we use fragment keyword here. only used if shaderType is E_FRAGMENT_SHADER

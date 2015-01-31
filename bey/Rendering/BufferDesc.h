@@ -25,7 +25,7 @@ namespace bey {
 		BeyUint totalByteSize;
 		BeyUint elementByteSize; // size of an element in the buffer in bytes
 
-#ifdef DIRECT3D
+#ifdef BEY_USE_DIRECT3D
 		//convert types to D3D11 corresponding types
 		static D3D11_USAGE ConvertEBufferUsage(E_BUFFER_USAGE usage);
 		static D3D11_BIND_FLAG ConvertEBufferType(E_BUFFER_TYPE type);

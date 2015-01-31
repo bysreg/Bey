@@ -3,7 +3,7 @@
 
 using namespace bey;
 
-#ifdef DIRECT3D
+#ifdef BEY_USE_DIRECT3D
 
 D3D11_USAGE BufferDesc::ConvertEBufferUsage(E_BUFFER_USAGE usage) {
 	switch (usage) {
@@ -28,4 +28,4 @@ D3D11_BIND_FLAG BufferDesc::ConvertEBufferType(E_BUFFER_TYPE type) {
 	assert(false); // force quit
 }
 
-#endif // -- DIRECT3D
+#endif // -- BEY_USE_DIRECT3D

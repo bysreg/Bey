@@ -2,7 +2,7 @@
 
 #include <d3d11.h>
 
-#ifdef DIRECT3D
+#ifdef BEY_USE_DIRECT3D
 typedef ID3D11InputLayout BeyNativeInputLayout;
 #else
 // TODO : open gl here
