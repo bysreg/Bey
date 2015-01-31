@@ -1,10 +1,10 @@
 #pragma once
 
-#ifdef OS_WIN32
+#ifdef BEY_OS_WIN32
 #include <DirectXMath.h>
 #endif
 
-#ifdef OS_WIN32 
+#ifdef BEY_OS_WIN32 
 typedef float BeyFloat;
 typedef int BeyInt;
 typedef unsigned int BeyUint;
