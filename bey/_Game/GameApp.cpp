@@ -1,5 +1,9 @@
 #include "GameApp.h"
+#if BEY_USE_DIRECT3D
 #include "Rendering\D3DRendering.h"
+#elif BEY_USE_OPENGL
+//TODO : 
+#endif
 #include "Rendering\IInputLayout.h"
 #include "Rendering\RenderingInitData.h"
 #include "Rendering\Vertex.h"
@@ -22,7 +26,11 @@ m_VertexBuffer(nullptr),
 m_IndexBuffer(nullptr),
 m_RenderData()
 {
+#ifdef BEY_USE_DIRECT3D
 	m_Rendering = new D3DRendering;
+#elif BEY_USE_OPENGL
+	// TODO : fill with open gl
+#endif
 }
 
 void GameApp::Init()

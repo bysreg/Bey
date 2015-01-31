@@ -1,7 +1,6 @@
 #include "Framework\WinGameTimer.h"
 #include "Common\MemoryManager.h"
 #include "Common\Log.h"
-#include "Rendering\D3DRendering.h"
 #include "Rendering\RenderingInitData.h"
 #include "GameApp.h"
 #include <iostream>
@@ -24,7 +23,7 @@ void CreateMainWindow(HWND* hWnd, int screenWidth, int screenHeight) {
 
 	// fill in the struct with the needed information
 	wc.cbSize = sizeof(wc); //  size of this structure
-	wc.style = CS_HREDRAW | CS_VREDRAW; // tell Windows to redraw the window if it is moved vertically or horizontally
+	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC; // tell Windows to redraw the window if it is moved vertically or horizontally and also allocates unique device context for each window in the class (necessary for openGL)
 	wc.lpfnWndProc = WindowProc; //  what function to use when it gets a message from Windows
 	wc.hInstance = hInstance;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);  // stores the default mouse image for the window class	 
@@ -97,6 +96,12 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	// sort through and find what code to run for the message given
 	switch (message)
 	{
+		// this message is read when the window is created	
+		case WM_CREATE:
+		{
+			
+		} break;
+
 		// this message is read when the window is closed
 		case WM_DESTROY:
 		{

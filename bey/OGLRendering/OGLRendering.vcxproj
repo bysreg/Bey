@@ -11,18 +11,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{9C5C3894-6F7C-45C9-BFAB-2E51999F5C63}</ProjectGuid>
-    <RootNamespace>_Game</RootNamespace>
+    <ProjectGuid>{C8800596-2096-4630-BD8A-5BDF8C724939}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>OGLRendering</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -39,54 +40,62 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)\..;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\..;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)\..;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\..;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>BEY_USE_OPENGL;BEY_OS_WIN32;_UNICODE;UNICODE;BEY_ENABLE_LOG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BEY_OS_WIN32;_UNICODE;UNICODE;_CRT_SECURE_NO_WARNINGS;BEY_USE_DIRECT3D;WIN32_LEAN_AND_MEAN;BEY_ENABLE_LOG</PreprocessorDefinitions>
-      <ForcedIncludeFiles>Common\MemoryOperator.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Common.lib;Framework.lib;Rendering.lib;d3d11.lib;D3DCompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>BEY_USE_OPENGL;BEY_OS_WIN32;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BEY_OS_WIN32;_UNICODE;UNICODE;_CRT_SECURE_NO_WARNINGS;BEY_USE_DIRECT3D;WIN32_LEAN_AND_MEAN;</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Common.lib;Framework.lib;Rendering.lib;d3d11.lib;D3DCompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameApp.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="..\Rendering\BufferDesc.h" />
+    <ClInclude Include="..\Rendering\Camera.h" />
+    <ClInclude Include="..\Rendering\IBuffer.h" />
+    <ClInclude Include="..\Rendering\IInputLayout.h" />
+    <ClInclude Include="..\Rendering\InputLayoutDesc.h" />
+    <ClInclude Include="..\Rendering\IRendering.h" />
+    <ClInclude Include="..\Rendering\IShader.h" />
+    <ClInclude Include="..\Rendering\RenderData.h" />
+    <ClInclude Include="..\Rendering\RenderingInitData.h" />
+    <ClInclude Include="..\Rendering\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameApp.h" />
+    <ClCompile Include="..\Rendering\BufferDesc.cpp" />
+    <ClCompile Include="..\Rendering\Camera.cpp" />
+    <ClCompile Include="..\Rendering\OGLRendering.cpp" />
+    <ClCompile Include="..\Rendering\ShaderInitData.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

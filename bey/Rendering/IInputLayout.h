@@ -1,11 +1,11 @@
 #pragma once
 
-#include <d3d11.h>
-
 #ifdef BEY_USE_DIRECT3D
+#include <d3d11.h>
 typedef ID3D11InputLayout BeyNativeInputLayout;
-#else
-// TODO : open gl here
+#elif BEY_USE_OPENGL
+#include <gl\GL.h>
+typedef GLuint BeyNativeInputLayout;
 #endif
 
 namespace bey {

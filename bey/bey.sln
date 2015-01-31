@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rendering", "Rendering\Rendering.vcxproj", "{DB2EBD69-E7FB-4F96-93B3-8C96B26EB9E0}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -20,6 +20,13 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Framework", "Framework\Framework.vcxproj", "{B3CB5746-6266-4CD5-B269-0F3EEE0217A5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_OGLGame", "_OGLGame\_OGLGame.vcxproj", "{8A45D8C7-3413-4D84-8E60-92D7E13DB506}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B3CB5746-6266-4CD5-B269-0F3EEE0217A5} = {B3CB5746-6266-4CD5-B269-0F3EEE0217A5}
+		{C8800596-2096-4630-BD8A-5BDF8C724939} = {C8800596-2096-4630-BD8A-5BDF8C724939}
+		{2D94F0BD-705B-4AFD-9F82-8B671F5D58FE} = {2D94F0BD-705B-4AFD-9F82-8B671F5D58FE}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OGLRendering", "OGLRendering\OGLRendering.vcxproj", "{C8800596-2096-4630-BD8A-5BDF8C724939}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +54,10 @@ Global
 		{8A45D8C7-3413-4D84-8E60-92D7E13DB506}.Debug|Win32.Build.0 = Debug|Win32
 		{8A45D8C7-3413-4D84-8E60-92D7E13DB506}.Release|Win32.ActiveCfg = Release|Win32
 		{8A45D8C7-3413-4D84-8E60-92D7E13DB506}.Release|Win32.Build.0 = Release|Win32
+		{C8800596-2096-4630-BD8A-5BDF8C724939}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C8800596-2096-4630-BD8A-5BDF8C724939}.Debug|Win32.Build.0 = Debug|Win32
+		{C8800596-2096-4630-BD8A-5BDF8C724939}.Release|Win32.ActiveCfg = Release|Win32
+		{C8800596-2096-4630-BD8A-5BDF8C724939}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

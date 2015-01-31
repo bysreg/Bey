@@ -89,6 +89,7 @@
     <ClInclude Include="IRendering.h" />
     <ClInclude Include="D3DRendering.h" />
     <ClInclude Include="IShader.h" />
+    <ClInclude Include="OGLBuffer.h" />
     <ClInclude Include="RenderData.h" />
     <ClInclude Include="RenderingInitData.h" />
     <ClInclude Include="Vertex.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="D3DRendering.cpp" />
     <ClCompile Include="D3DShader.cpp" />
     <ClCompile Include="DxErr.cpp" />
+    <ClCompile Include="OGLBuffer.cpp" />
     <ClCompile Include="ShaderInitData.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

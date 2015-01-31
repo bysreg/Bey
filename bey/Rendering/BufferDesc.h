@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Common\DataTypeDefs.h"
+
+#ifdef BEY_USE_DIRECT3D
 #include <d3d11.h>
+#endif
 
 namespace bey {
 
