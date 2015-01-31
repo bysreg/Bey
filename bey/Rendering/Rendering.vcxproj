@@ -102,7 +102,6 @@
     <ClCompile Include="D3DRendering.cpp" />
     <ClCompile Include="D3DShader.cpp" />
     <ClCompile Include="DxErr.cpp" />
-    <ClCompile Include="OGLBuffer.cpp" />
     <ClCompile Include="ShaderInitData.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
