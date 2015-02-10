@@ -1,6 +1,8 @@
 #include "OGLRendering.h"
 #include "RenderingInitData.h"
 #include "OGLBuffer.h"
+#include "OGLShader.h"
+#include "Common\Log.h"
 #include <glew.h>
 
 using namespace bey;
@@ -77,7 +79,79 @@ void OGLRendering::Render(const RenderData& renderData)
 
 IShader* OGLRendering::CompileShader(const CompileShaderData& compileShaderData)
 {
+	GLuint shader;
+	GLint compiled;
+	GLenum type;
+	switch (compileShaderData.shaderType)
+	{
+	case E_SHADER_TYPE::E_VERTEX_SHADER:
+		type = GL_VERTEX_SHADER;
+		break;
+	case E_SHADER_TYPE::E_FRAGMENT_SHADER:
+		type = GL_FRAGMENT_SHADER;
+		break;
+	}
 
+	shader = glCreateShader(type);
+
+	if (shader == 0)
+	{
+		BEY_LOG("cannot create shader");
+		return nullptr; // something wrong
+	}
+
+	// Load the shader source
+	FILE * pf;
+	if (fopen_s(&pf, compileShaderData.filepath, "rb") != 0)
+		return NULL;
+	fseek(pf, 0, SEEK_END);
+	long size = ftell(pf);
+	fseek(pf, 0, SEEK_SET);
+
+	char * shaderSrc = new char[size + 1];
+	fread(shaderSrc, sizeof(char), size, pf);
+	shaderSrc[size] = 0;
+	fclose(pf);
+
+	glShaderSource(shader, 1, (const char **)&shaderSrc, NULL);
+	delete[] shaderSrc;
+
+	// Compile the shader
+	glCompileShader(shader);
+
+	// Check the compile status
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+
+	if (!compiled)
+	{
+		GLint infoLen = 0;
+
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
+
+		if (infoLen > 1)
+		{
+			char* infoLog = new char[infoLen];
+
+
+			glGetShaderInfoLog(shader, infoLen, NULL, infoLog);
+			BEY_LOGF("Error compiling shader <%s>:\n%s\n", compileShaderData.filepath, infoLog);
+
+			delete[] infoLog;
+		}
+
+		glDeleteShader(shader);
+		return 0;
+	}
+
+	OGLShader* oglShader = new OGLShader;
+
+	ShaderInitData sid;
+	sid.shaderType = compileShaderData.shaderType;
+	sid.nativeProgram = shader;
+
+	oglShader->Init(sid);
+
+	return oglShader;
 }
 
 IInputLayout* OGLRendering::CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc, IShader* compiledShader)

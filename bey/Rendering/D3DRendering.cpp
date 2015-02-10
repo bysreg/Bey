@@ -327,7 +327,7 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 		return nullptr; // never reach this
 	}
 
-	//create shader object out of the native compiled shader (because of course you can compile the shaders not in runtime)
+	//create shader object out of the native compiled shader (the previous code only compiles the shader)
 	return CreateShader(shaderBlob, compileShaderData.shaderType);
 }
 

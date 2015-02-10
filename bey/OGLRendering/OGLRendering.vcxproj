@@ -90,6 +90,7 @@
     <ClInclude Include="..\Rendering\IShader.h" />
     <ClInclude Include="..\Rendering\OGLBuffer.h" />
     <ClInclude Include="..\Rendering\OGLRendering.h" />
+    <ClInclude Include="..\Rendering\OGLShader.h" />
     <ClInclude Include="..\Rendering\RenderData.h" />
     <ClInclude Include="..\Rendering\RenderingInitData.h" />
     <ClInclude Include="..\Rendering\Vertex.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="..\Rendering\Camera.cpp" />
     <ClCompile Include="..\Rendering\OGLBuffer.cpp" />
     <ClCompile Include="..\Rendering\OGLRendering.cpp" />
+    <ClCompile Include="..\Rendering\OGLShader.cpp" />
     <ClCompile Include="..\Rendering\ShaderInitData.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

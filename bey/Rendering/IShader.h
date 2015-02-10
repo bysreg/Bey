@@ -8,6 +8,8 @@ struct ID3D10Blob;
 typedef ID3D10Blob ID3DBlob;
 struct ID3D11VertexShader;
 struct ID3D11PixelShader;
+#elif BEY_USE_OPENGL
+#include <glew.h>
 #endif
 
 namespace bey {
@@ -28,6 +30,8 @@ namespace bey {
 		ID3DBlob* nativeProgram; // contains ID3DBlob from compiling shader, after that it is used to create vertex/fragment shader object
 		ID3D11VertexShader* vertexShaderObject; // only used if shaderType is E_VERTEX_SHADER
 		ID3D11PixelShader* fragmentShaderObject; // we use fragment keyword here. only used if shaderType is E_FRAGMENT_SHADER
+#elif BEY_USE_OPENGL
+		GLuint nativeProgram;
 #endif
 	};
 
