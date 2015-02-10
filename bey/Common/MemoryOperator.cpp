@@ -1,4 +1,6 @@
 #include "MemoryManager.h"
+#include <cstddef>
+using namespace std;
 
 using namespace bey;
 
