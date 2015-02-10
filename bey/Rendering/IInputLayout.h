@@ -4,7 +4,7 @@
 #include <d3d11.h>
 typedef ID3D11InputLayout BeyNativeInputLayout;
 #elif BEY_USE_OPENGL
-#include <glew.h>
+#include "glew.h"
 typedef GLuint BeyNativeInputLayout;
 #endif
 

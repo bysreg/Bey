@@ -2,7 +2,7 @@
 #if BEY_USE_DIRECT3D
 #include "Rendering\D3DRendering.h"
 #elif BEY_USE_OPENGL
-//TODO : 
+#include "Rendering\OGLRendering.h"
 #endif
 #include "Rendering\IInputLayout.h"
 #include "Rendering\RenderingInitData.h"
