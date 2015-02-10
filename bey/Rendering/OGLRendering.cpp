@@ -57,7 +57,17 @@ IBuffer* OGLRendering::CreateBuffer(const BufferDesc* bufferDesc)
 
 void OGLRendering::BindBuffer(const IBuffer& buffer)
 {
-
+	BufferDesc bufferDesc;
+	buffer.GetDesc(&bufferDesc);
+	GLuint* nativeBuffer = buffer.GetNativeBuffer();
+	if (bufferDesc.type == E_BT_VERTEX_BUFFER)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, *nativeBuffer);
+	}
+	else if (bufferDesc.type == E_BT_INDEX_BUFFER)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *nativeBuffer);
+	}
 }
 
 void OGLRendering::Render(const RenderData& renderData)
