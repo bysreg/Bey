@@ -30,16 +30,26 @@ void * MemoryManager::Alloc(unsigned int noBytes, char * fileName, unsigned int 
 	SanityCheck();
 #endif
 
-	m_dataBuffers[m_noBuffers].pAddress = malloc(noBytes + 4);
+	//allocate memory
+	size_t offset = sizeof(m_noBuffers);
+	void* ori_mem = malloc(noBytes + offset + 4);
+	void* ret_mem = (void*) (((size_t)ori_mem) + offset);
+
+	//put the index of m_dataBuffers inside the memory
+	memcpy(ori_mem, &m_noBuffers, sizeof(m_noBuffers));
+
+	m_dataBuffers[m_noBuffers].pAddress = ret_mem;
+	m_dataBuffers[m_noBuffers].oriAddress = ori_mem;
 	m_dataBuffers[m_noBuffers].fileName = fileName;
 	m_dataBuffers[m_noBuffers].line = line;
 	m_dataBuffers[m_noBuffers].length = noBytes;
 
-	char * temp = (char *)m_dataBuffers[m_noBuffers].pAddress;
+	char* temp = (char*)m_dataBuffers[m_noBuffers].pAddress;
 	temp += noBytes;
-	memcpy(temp, &CHECK_CODE, 4);
+	memcpy(temp, &CHECK_CODE, 4); // put sentinel value to detect memory overflow/corruption
 
-	return m_dataBuffers[m_noBuffers++].pAddress;
+	++m_noBuffers;
+	return ret_mem;
 }
 
 void MemoryManager::Free(void * pAddress)
@@ -55,24 +65,26 @@ void MemoryManager::Free(void * pAddress)
 	}
 #endif
 
-	for (unsigned int i = 0; i < m_noBuffers; i++)
+	unsigned int bufferIdx = 0;
+	void* ori_mem = (void*)(((size_t)pAddress) - sizeof(m_noBuffers));
+	memcpy(&bufferIdx, ori_mem, sizeof(m_noBuffers));
+
+	if (bufferIdx >= m_noBuffers)
 	{
-		if (m_dataBuffers[i].pAddress == pAddress)
-		{
-			free(pAddress);
-			if (i != m_noBuffers - 1)
-			{
-				memcpy(m_dataBuffers + i, m_dataBuffers + m_noBuffers - 1, sizeof(AllocBuffers));
-			}
-			m_noBuffers--;
-			return;
-		}
+		// wrong pointer deletion
+#ifdef _DEBUG
+		Error("Bad pointer deletion\n");
+		return;
+#endif
 	}
 
-	// bad pointer (already deleted) deletion
-#ifdef _DEBUG
-	Error("Bad pointer deletion\n");
-#endif
+	free(ori_mem);
+	if (bufferIdx != m_noBuffers - 1)
+	{		
+		memcpy(m_dataBuffers + bufferIdx, m_dataBuffers + m_noBuffers - 1, sizeof(AllocBuffers));
+		memcpy(m_dataBuffers[bufferIdx].oriAddress, &bufferIdx, sizeof(m_noBuffers)); // update the buffer index
+	}
+	m_noBuffers--;
 }
 
 void MemoryManager::Dump()
