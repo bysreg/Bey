@@ -11,6 +11,8 @@ namespace bey
 		virtual void Init(const ShaderInitData& data);
 		virtual void Clean();
 
+		GLuint GetCompiledShader();
+
 		OGLShader();
 		~OGLShader();
 	private:

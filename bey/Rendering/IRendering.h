@@ -39,7 +39,7 @@ namespace bey {
 		virtual IShader* CompileShader(const CompileShaderData& compileShaderData) = 0;
 
 		// create input layout that feeds vertex data to the graphics pipeline
-		virtual IInputLayout* CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc, IShader* compiledShader) = 0;		
+		virtual IInputLayout* CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc, IShader* compiledVertexShader, IShader* compiledFragmentShader) = 0;		
 
 		//ctor, dtor
 		IRendering() {};

@@ -1,4 +1,4 @@
-attribute vec3 a_pos; // local pos
+attribute vec3 a_position; // local pos
 attribute vec4 a_color;
 
 varying vec4 v_color;

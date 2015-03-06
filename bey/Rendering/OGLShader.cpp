@@ -12,6 +12,11 @@ void OGLShader::Clean()
 	delete m_Data;
 }
 
+GLuint OGLShader::GetCompiledShader()
+{
+	return m_Data->nativeProgram;
+}
+
 OGLShader::OGLShader()
 {
 }

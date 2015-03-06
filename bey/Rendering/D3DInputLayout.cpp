@@ -21,7 +21,7 @@ void D3DInputLayout::Clean()
 
 LPCSTR D3DInputLayout::ConvertEinputLayoutType(E_INPUT_LAYOUT_TYPE type)
 {
-	// node defaul in switch is intentional. so that it will create runtime error whenever there's a type with no matching case
+	// no default in switch is intentional. so that it will create runtime error whenever there's a type with no matching case
 	switch (type) {
 	case E_IL_COLOR :
 		return "COLOR";

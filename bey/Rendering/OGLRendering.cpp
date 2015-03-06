@@ -3,6 +3,7 @@
 #include "OGLBuffer.h"
 #include "OGLShader.h"
 #include "Common\Log.h"
+#include "OGLInputLayout.h"
 #include <glew.h>
 
 using namespace bey;
@@ -29,6 +30,7 @@ void OGLRendering::Init(const RenderingInitData* data)
 
 void OGLRendering::Clean()
 {
+	// TODO : not implemented yet
 }
 
 void OGLRendering::Clear()
@@ -38,6 +40,7 @@ void OGLRendering::Clear()
 
 void OGLRendering::SwapBuffer()
 {
+	// TODO : not implemented yet	
 }
 
 IBuffer* OGLRendering::CreateBuffer(const BufferDesc* bufferDesc)
@@ -74,7 +77,7 @@ void OGLRendering::BindBuffer(const IBuffer& buffer)
 
 void OGLRendering::Render(const RenderData& renderData)
 {
-
+	// TODO : not implemented yet
 }
 
 IShader* OGLRendering::CompileShader(const CompileShaderData& compileShaderData)
@@ -154,8 +157,66 @@ IShader* OGLRendering::CompileShader(const CompileShaderData& compileShaderData)
 	return oglShader;
 }
 
-IInputLayout* OGLRendering::CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc, IShader* compiledShader)
-{
+IInputLayout* OGLRendering::CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc, IShader* compiledVertexShader, IShader* compiledFragmentShader)
+{	
+	OGLInputLayout* oglInputLayout = new OGLInputLayout;
+	BeyNativeInputLayout* nativeInputLayout = new BeyNativeInputLayout[numInputLayoutDesc];
+	OGLShader* oglVs = static_cast<OGLShader*>(compiledVertexShader);
+	OGLShader* oglFs = static_cast<OGLShader*>(compiledFragmentShader);
 
+	// link both the vertex shader and fragment shader
+	GLuint shaderProgram = LoadProgram(oglVs->GetCompiledShader(), oglFs->GetCompiledShader());
+
+	for (int i = 0; i < numInputLayoutDesc; i++)
+	{
+		switch (inputLayoutDesc[i].type)
+		{
+		case E_INPUT_LAYOUT_TYPE::E_IL_POSITION:
+			nativeInputLayout[i] = glGetAttribLocation(shaderProgram, "a_position");
+			break;
+		case E_INPUT_LAYOUT_TYPE::E_IL_COLOR:
+			nativeInputLayout[i] = glGetAttribLocation(shaderProgram, "a_color");
+			break;
+		}
+	}
+
+	oglInputLayout->Init(nativeInputLayout, inputLayoutDesc, numInputLayoutDesc);
+
+	return oglInputLayout;
 }
 
+// create the shader program object
+GLuint OGLRendering::LoadProgram(GLuint compiledVertexShader, GLuint compiledFragmentShader)
+{
+	GLuint programObject = glCreateProgram();
+	GLint link_status;
+
+	if (programObject == 0)
+		return 0;
+
+	glAttachShader(programObject, compiledVertexShader);
+	glAttachShader(programObject, compiledFragmentShader);
+	glLinkProgram(programObject);
+	glGetProgramiv(programObject, GL_LINK_STATUS, &link_status);
+
+	if (link_status == GL_FALSE) // if linking failed
+	{
+		GLint infoLogLength = 0;
+		glGetProgramiv(programObject, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+		if (infoLogLength > 1)
+		{
+			char* infoLog = new char[sizeof(char) * infoLogLength];
+
+			glGetProgramInfoLog(programObject, infoLogLength, NULL, infoLog);
+			BEY_LOGF("Error linking program:\n%s\n", infoLog);
+
+			delete infoLog;
+		}
+
+		glDeleteProgram(programObject);
+		return 0;
+	}
+
+	return programObject;
+}

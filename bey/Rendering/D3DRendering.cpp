@@ -331,13 +331,14 @@ IShader* D3DRendering::CompileShader(const CompileShaderData& compileShaderData)
 	return CreateShader(shaderBlob, compileShaderData.shaderType);
 }
 
-IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc, IShader* compiledShader)
+IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc* inputLayoutDesc, int numInputLayoutDesc, IShader* compiledVertexShader, IShader* compiledFragmentShader)
 {
 	D3D11_INPUT_ELEMENT_DESC* d3dDescs = new D3D11_INPUT_ELEMENT_DESC[numInputLayoutDesc];
 	ID3D11InputLayout* nativeInputLayout = nullptr;
 	D3DInputLayout* inputLayout = new D3DInputLayout;
 
-	for (int i = 0; i < numInputLayoutDesc; i++) {
+	for (int i = 0; i < numInputLayoutDesc; i++) 
+	{
 		d3dDescs[i].SemanticName = D3DInputLayout::ConvertEinputLayoutType(inputLayoutDesc[i].type);
 		d3dDescs[i].SemanticIndex = inputLayoutDesc[i].index;
 		d3dDescs[i].Format = D3DInputLayout::GetSuitableFormatFromType(inputLayoutDesc[i].type);
@@ -347,7 +348,7 @@ IInputLayout* D3DRendering::CreateInputLayout(const InputLayoutDesc* inputLayout
 		d3dDescs[i].InstanceDataStepRate = 0;
 	}	
 
-	D3DShader* d3dCompiledShader = static_cast<D3DShader*>(compiledShader);
+	D3DShader* d3dCompiledShader = static_cast<D3DShader*>(compiledVertexShader);
 	LPVOID nativeCompiledShaderPointer = d3dCompiledShader->GetCompiledShader()->GetBufferPointer();
 	SIZE_T nativeCompiledShaderSize = d3dCompiledShader->GetCompiledShader()->GetBufferSize();
 

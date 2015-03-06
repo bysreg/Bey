@@ -10,6 +10,7 @@ namespace bey {
 	};
 
 	//description of each vertex's data
+	//for now, supports only position and color
 	struct InputLayoutDesc {
 		E_INPUT_LAYOUT_TYPE type; // semantic of that input. what will it be used for
 		BeyUint index;

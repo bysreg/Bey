@@ -54,6 +54,9 @@
     <ClInclude Include="..\Rendering\OGLShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Rendering\OGLInputLayout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Rendering\BufferDesc.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Rendering\OGLShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\OGLInputLayout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
