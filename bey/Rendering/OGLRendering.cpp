@@ -18,6 +18,7 @@ OGLRendering::~OGLRendering()
 
 void OGLRendering::Init(const RenderingInitData* data)
 {
+	//glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
 	{
@@ -82,8 +83,8 @@ void OGLRendering::Render(const RenderData& renderData)
 
 IShader* OGLRendering::CompileShader(const CompileShaderData& compileShaderData)
 {
-	GLuint shader;
-	GLint compiled;
+	GLuint shader = 0;
+	GLint compiled = 0;
 	GLenum type;
 	switch (compileShaderData.shaderType)
 	{
@@ -189,7 +190,7 @@ IInputLayout* OGLRendering::CreateInputLayout(const InputLayoutDesc* inputLayout
 GLuint OGLRendering::LoadProgram(GLuint compiledVertexShader, GLuint compiledFragmentShader)
 {
 	GLuint programObject = glCreateProgram();
-	GLint link_status;
+	GLint link_status = 0;
 
 	if (programObject == 0)
 		return 0;

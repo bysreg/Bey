@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glew.h>
 #include "IRendering.h"
 
 namespace bey

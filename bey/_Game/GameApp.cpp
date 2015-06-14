@@ -29,7 +29,7 @@ m_RenderData()
 #ifdef BEY_USE_DIRECT3D
 	m_Rendering = new D3DRendering;
 #elif BEY_USE_OPENGL
-	// TODO : fill with open gl
+	m_Rendering = new OGLRendering;
 #endif
 }
 
@@ -180,5 +180,5 @@ void GameApp::CreateVertexLayout()
 		{ E_IL_COLOR, 0, 12 }
 	};
 
-	m_InputLayout = m_Rendering->CreateInputLayout(vertexDesc, 2, m_Vs);
+	m_InputLayout = m_Rendering->CreateInputLayout(vertexDesc, 2, m_Vs, m_Fs);
 }
