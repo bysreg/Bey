@@ -5,6 +5,7 @@
 #include "Common\Log.h"
 #include "OGLInputLayout.h"
 #include <glew.h>
+#include <SDL.h>
 
 using namespace bey;
 
@@ -18,6 +19,11 @@ OGLRendering::~OGLRendering()
 
 void OGLRendering::Init(const RenderingInitData* data)
 {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == -1)
+	{
+		MessageBox(0, L"SDL_Init Failed.", 0, 0);
+	}
+
 	//glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
