@@ -47,7 +47,7 @@ void GameApp::Init()
 }
 
 void GameApp::Init(int width, int height, HWND hWnd)
-{
+{	
 	m_Width = width;
 	m_Height = height;
 	m_Hwnd = hWnd;
@@ -162,12 +162,20 @@ void GameApp::CalculateFps(float dt)
 void GameApp::CompileShaders()
 {
 	CompileShaderData vcsd;
+#if BEY_USE_DIRECT3D
 	vcsd.filepath = "..\\res\\shaders\\src\\simple_vert.hlsl";
+#elif BEY_USE_OPENGL
+	vcsd.filepath = "..\\res\\shaders\\src\\TriangleShaderVS.glsl";
+#endif
 	vcsd.shaderType = E_SHADER_TYPE::E_VERTEX_SHADER;
 	m_Vs = m_Rendering->CompileShader(vcsd);
 
 	CompileShaderData fcsd;
+#if BEY_USE_DIRECT3D
 	fcsd.filepath = "..\\res\\shaders\\src\\simple_frag.hlsl";
+#elif BEY_USE_OPENGL
+	fcsd.filepath = "..\\res\\shaders\\src\\TriangleShaderFS.glsl";
+#endif
 	fcsd.shaderType = E_SHADER_TYPE::E_FRAGMENT_SHADER;
 	m_Fs = m_Rendering->CompileShader(fcsd);
 }

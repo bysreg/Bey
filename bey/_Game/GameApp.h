@@ -31,7 +31,6 @@ namespace bey {
 		HWND m_Hwnd;
 		IRendering* m_Rendering;
 
-		//cube
 		IBuffer* m_IndexBuffer;
 		IBuffer* m_VertexBuffer;
 		IInputLayout* m_InputLayout;

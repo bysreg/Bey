@@ -6,6 +6,10 @@
 #include <iostream>
 #include <windows.h>
 
+#if BEY_USE_OPENGL
+#include <glew.h>
+#endif
+
 // the WindowProc function prototype
 LRESULT CALLBACK WindowProc(HWND hWnd,
 	UINT message,
@@ -53,7 +57,7 @@ void CreateMainWindow(HWND* hWnd, int screenWidth, int screenHeight) {
 
 	ShowWindow(*hWnd, TRUE);
 
-	BEY_LOG("Finish Creating Main Window");	
+	BEY_LOG("Finished Creating Main Window");	
 }
 
 void MainLoop(bey::GameApp* app) 
@@ -90,6 +94,42 @@ void MainLoop(bey::GameApp* app)
 	}	
 }
 
+void SetupOpenGl(HWND hWnd)
+{
+	BEY_LOG("Creating OpenGL context ...");
+	PIXELFORMATDESCRIPTOR pfd =
+	{
+		sizeof(PIXELFORMATDESCRIPTOR),
+		1,
+		PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    //Flags
+		PFD_TYPE_RGBA,            //The kind of framebuffer. RGBA or palette.
+		32,                        //Colordepth of the framebuffer.
+		0, 0, 0, 0, 0, 0,
+		0,
+		0,
+		0,
+		0, 0, 0, 0,
+		24,                        //Number of bits for the depthbuffer
+		8,                        //Number of bits for the stencilbuffer
+		0,                        //Number of Aux buffers in the framebuffer.
+		PFD_MAIN_PLANE,
+		0,
+		0, 0, 0
+	};
+
+	HDC ourWindowHandleToDeviceContext = GetDC(hWnd);
+
+	int  letWindowsChooseThisPixelFormat;
+	letWindowsChooseThisPixelFormat = ChoosePixelFormat(ourWindowHandleToDeviceContext, &pfd);
+	SetPixelFormat(ourWindowHandleToDeviceContext, letWindowsChooseThisPixelFormat, &pfd);
+
+	HGLRC ourOpenGLRenderingContext = wglCreateContext(ourWindowHandleToDeviceContext);
+	wglMakeCurrent(ourWindowHandleToDeviceContext, ourOpenGLRenderingContext);
+
+	//MessageBoxA(0, (char*) glGetString(GL_VERSION), "OPENGL VERSION", 0);
+	BEY_LOGF("Open GL context created. OPENGL_VERSION %s\n", glGetString(GL_VERSION));
+}
+
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -99,7 +139,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		// this message is read when the window is created	
 		case WM_CREATE:
 		{
-			
+#if BEY_USE_OPENGL
+			// create open gl context
+			SetupOpenGl(hWnd);
+#endif
 		} break;
 
 		// this message is read when the window is closed
